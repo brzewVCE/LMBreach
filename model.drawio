@@ -38,16 +38,16 @@
           <mxGeometry x="21" y="250" width="510" height="110" as="geometry" />
         </mxCell>
         <mxCell id="NHLAjTvj-q2QCi7Z65vW-37" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="30" y="285" width="490" height="70" as="geometry" />
+          <mxGeometry x="20" y="285" width="490" height="70" as="geometry" />
         </mxCell>
         <mxCell id="NHLAjTvj-q2QCi7Z65vW-38" value="Wszystkie komponenty" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
           <mxGeometry x="160" y="250" width="240" height="30" as="geometry" />
         </mxCell>
         <mxCell id="NHLAjTvj-q2QCi7Z65vW-39" value="&lt;div&gt;Kategorie (zależne od funkcjonaleności komponentu, np. DOS)&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="51.5" y="285" width="449" height="30" as="geometry" />
+          <mxGeometry x="21" y="285" width="489" height="30" as="geometry" />
         </mxCell>
         <mxCell id="NHLAjTvj-q2QCi7Z65vW-41" value="Komponent (jego nazwa, opis, opcje i parametry)" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="40" y="310" width="408" height="40" as="geometry" />
+          <mxGeometry x="20" y="315" width="408" height="40" as="geometry" />
         </mxCell>
         <mxCell id="NHLAjTvj-q2QCi7Z65vW-48" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.564;entryY=0.987;entryDx=0;entryDy=0;entryPerimeter=0;startArrow=classic;startFill=1;" edge="1" parent="1" source="NHLAjTvj-q2QCi7Z65vW-8" target="NHLAjTvj-q2QCi7Z65vW-41">
           <mxGeometry relative="1" as="geometry" />
