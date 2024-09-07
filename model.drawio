@@ -1,31 +1,56 @@
-<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:129.0) Gecko/20100101 Firefox/129.0" version="24.7.7">
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:130.0) Gecko/20100101 Firefox/130.0" version="24.7.12">
   <diagram name="Strona-1" id="xsa9B9rwEk3ypq9Gwho9">
-    <mxGraphModel dx="378" dy="188" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="690" dy="343" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
         <mxCell id="2" value="LLMBreach" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=28.933331298828126;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;" parent="1" vertex="1">
-          <mxGeometry x="8" y="20" width="118" height="71.93333129882812" as="geometry" />
+          <mxGeometry x="20" y="120" width="510" height="100.00333129882812" as="geometry" />
         </mxCell>
-        <mxCell id="3" value="+ Component1" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="2" vertex="1">
-          <mxGeometry y="28.933331298828126" width="118" height="29" as="geometry" />
+        <mxCell id="NHLAjTvj-q2QCi7Z65vW-14" value="&lt;div style=&quot;&quot; align=&quot;center&quot;&gt;Wraper do komponentów (wybieranie komponentu, wykonywanie, ustawianie parametrów,&lt;br&gt;&amp;nbsp;mierzenie czasu, sprawdzanie odpowiedzi)&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=center;" vertex="1" parent="2">
+          <mxGeometry y="28.933331298828126" width="510" height="71.07" as="geometry" />
         </mxCell>
-        <mxCell id="4" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" parent="2" vertex="1">
-          <mxGeometry y="57.93333129882812" width="118" height="14" as="geometry" />
+        <mxCell id="NHLAjTvj-q2QCi7Z65vW-46" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;startArrow=classic;startFill=1;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="270" y="550" as="sourcePoint" />
+            <mxPoint x="269.74" y="430" as="targetPoint" />
+          </mxGeometry>
         </mxCell>
-        <mxCell id="5" value="App" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=28.933331298828126;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;" parent="1" vertex="1">
-          <mxGeometry x="8" y="157" width="118" height="71.93333129882812" as="geometry" />
+        <mxCell id="5" value="Lokalna aplikacja LLM" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=28.933331298828126;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;" parent="1" vertex="1">
+          <mxGeometry x="20" y="560" width="500" height="71.93333129882812" as="geometry" />
         </mxCell>
-        <mxCell id="6" value="+ Component2" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="5" vertex="1">
-          <mxGeometry y="28.933331298828126" width="118" height="29" as="geometry" />
+        <mxCell id="6" value="Przetwarzanie" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="5" vertex="1">
+          <mxGeometry y="28.933331298828126" width="500" height="29" as="geometry" />
         </mxCell>
         <mxCell id="7" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" parent="5" vertex="1">
-          <mxGeometry y="57.93333129882812" width="118" height="14" as="geometry" />
+          <mxGeometry y="57.93333129882812" width="500" height="14" as="geometry" />
         </mxCell>
-        <mxCell id="8" value="Interaction" style="curved=1;startArrow=block;startSize=16;startFill=0;endArrow=none;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" parent="1" source="2" target="5" edge="1">
-          <mxGeometry relative="1" as="geometry">
-            <Array as="points" />
-          </mxGeometry>
+        <mxCell id="NHLAjTvj-q2QCi7Z65vW-8" value="&lt;div align=&quot;left&quot;&gt;&lt;br&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="21" y="390" width="500" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="NHLAjTvj-q2QCi7Z65vW-35" value="Komunikator z API (wysyłanie i odbieranie)" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="30" y="395" width="480" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="NHLAjTvj-q2QCi7Z65vW-49" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;startArrow=classic;startFill=1;" edge="1" parent="1" source="NHLAjTvj-q2QCi7Z65vW-36" target="NHLAjTvj-q2QCi7Z65vW-14">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="NHLAjTvj-q2QCi7Z65vW-36" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="21" y="250" width="510" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="NHLAjTvj-q2QCi7Z65vW-37" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="30" y="285" width="490" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="NHLAjTvj-q2QCi7Z65vW-38" value="Wszystkie komponenty" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="160" y="250" width="240" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="NHLAjTvj-q2QCi7Z65vW-39" value="&lt;div&gt;Kategorie (zależne od funkcjonaleności komponentu, np. DOS)&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="51.5" y="285" width="449" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="NHLAjTvj-q2QCi7Z65vW-41" value="Komponent (jego nazwa, opis, opcje i parametry)" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="40" y="310" width="408" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="NHLAjTvj-q2QCi7Z65vW-48" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.564;entryY=0.987;entryDx=0;entryDy=0;entryPerimeter=0;startArrow=classic;startFill=1;" edge="1" parent="1" source="NHLAjTvj-q2QCi7Z65vW-8" target="NHLAjTvj-q2QCi7Z65vW-41">
+          <mxGeometry relative="1" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
