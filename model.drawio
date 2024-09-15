@@ -1,6 +1,6 @@
 <mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:130.0) Gecko/20100101 Firefox/130.0" version="24.7.12">
   <diagram name="Strona-1" id="xsa9B9rwEk3ypq9Gwho9">
-    <mxGraphModel dx="1621" dy="394" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="1415" dy="292" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -57,7 +57,7 @@
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="rRGUe4ISB4xN1bIgfNmd-7" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.25;entryDx=0;entryDy=0;" edge="1" parent="1" source="NHLAjTvj-q2QCi7Z65vW-58" target="NHLAjTvj-q2QCi7Z65vW-61">
+        <mxCell id="rRGUe4ISB4xN1bIgfNmd-7" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.25;entryDx=0;entryDy=0;" parent="1" source="NHLAjTvj-q2QCi7Z65vW-58" target="NHLAjTvj-q2QCi7Z65vW-61" edge="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
               <mxPoint x="-50" y="235" />
@@ -65,7 +65,7 @@
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="NHLAjTvj-q2QCi7Z65vW-58" value="Wraper do komponentów (wybieranie komponentu, wykonywanie, ustawianie parametrów,&lt;br&gt;&amp;nbsp;mierzenie czasu, sprawdzanie odpowiedzi)" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+        <mxCell id="NHLAjTvj-q2QCi7Z65vW-58" value="Wraper do komponentów (wybieranie komponentu, wykonywanie, ustawianie parametrów,&lt;br&gt;&amp;nbsp;mierzenie czasu, sprawdzanie odpowiedzi, ustawianie celu)" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
           <mxGeometry x="21" y="220.00333129882813" width="510" height="30" as="geometry" />
         </mxCell>
         <mxCell id="NHLAjTvj-q2QCi7Z65vW-60" value="Wyświetlenie menu i połączenie się z bazą danych" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="1" vertex="1">
@@ -76,6 +76,45 @@
         </mxCell>
         <mxCell id="NHLAjTvj-q2QCi7Z65vW-61" value="Komunikator z API (wysyłanie odbieranie)" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
           <mxGeometry x="25" y="360" width="425" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="Mppl3Bngeb9TIjAJbDSZ-8" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="Mppl3Bngeb9TIjAJbDSZ-7" target="Mppl3Bngeb9TIjAJbDSZ-9">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="-640" y="200" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Mppl3Bngeb9TIjAJbDSZ-7" value="Ekran startowy" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="-600" y="71.07" width="120" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="Mppl3Bngeb9TIjAJbDSZ-10" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="Mppl3Bngeb9TIjAJbDSZ-9" target="Mppl3Bngeb9TIjAJbDSZ-11">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="-540" y="420" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Mppl3Bngeb9TIjAJbDSZ-9" value="&lt;font style=&quot;font-size: 12px;&quot;&gt;Weryfikacja bazy danych( czy jest aktualna i czy moduły spełniają klasę &quot;moduł&quot;)&lt;/font&gt;" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="-680" y="200" width="280" height="160" as="geometry" />
+        </mxCell>
+        <mxCell id="Mppl3Bngeb9TIjAJbDSZ-12" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="Mppl3Bngeb9TIjAJbDSZ-11" target="Mppl3Bngeb9TIjAJbDSZ-13">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="-540" y="540" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Mppl3Bngeb9TIjAJbDSZ-11" value="Menu wyboru modułu" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="-600" y="410" width="120" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="Mppl3Bngeb9TIjAJbDSZ-15" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;startArrow=classic;startFill=1;" edge="1" parent="1" source="Mppl3Bngeb9TIjAJbDSZ-13" target="Mppl3Bngeb9TIjAJbDSZ-14">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Mppl3Bngeb9TIjAJbDSZ-16" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="Mppl3Bngeb9TIjAJbDSZ-13" target="Mppl3Bngeb9TIjAJbDSZ-11">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Mppl3Bngeb9TIjAJbDSZ-13" value="Wykonywanie modułu" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="-640" y="544.5" width="200" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="Mppl3Bngeb9TIjAJbDSZ-14" value="Komunikacja z aplikacją LLM" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="-640" y="680" width="200" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="Mppl3Bngeb9TIjAJbDSZ-18" value="&lt;h1 style=&quot;margin-top: 0px; font-size: 15px;&quot;&gt;Moduły&lt;br style=&quot;font-size: 15px;&quot;&gt;&lt;/h1&gt;&lt;p style=&quot;font-size: 15px;&quot;&gt;- Testowe (sprawdzanie połączenia z aplikacją LLM czy odpowiada, w jakim czasie odpowiada, czy można wrzucać pliki)&lt;/p&gt;&lt;p style=&quot;font-size: 15px;&quot;&gt;- DOS&lt;/p&gt;- Generowanie niestosownych treści&lt;br style=&quot;font-size: 15px;&quot;&gt;&lt;div style=&quot;font-size: 15px;&quot;&gt;&lt;br style=&quot;font-size: 15px;&quot;&gt;&lt;/div&gt;&lt;div style=&quot;font-size: 15px;&quot;&gt;- Prompt injection z pliku&lt;/div&gt;&lt;div style=&quot;font-size: 15px;&quot;&gt;&lt;br style=&quot;font-size: 15px;&quot;&gt;&lt;/div&gt;&lt;div style=&quot;font-size: 15px;&quot;&gt;- Enumeracja (model cloning, informacje o technologiach, hasłach i plikach na systemie)&lt;/div&gt;&lt;div style=&quot;font-size: 15px;&quot;&gt;&lt;br style=&quot;font-size: 15px;&quot;&gt;&lt;/div&gt;&lt;div style=&quot;font-size: 15px;&quot;&gt;- Code Generation/Execution&lt;/div&gt;" style="text;html=1;whiteSpace=wrap;overflow=hidden;rounded=0;fontSize=15;" vertex="1" parent="1">
+          <mxGeometry x="-820" y="840" width="820" height="320" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
