@@ -113,6 +113,9 @@
         <mxCell id="Mppl3Bngeb9TIjAJbDSZ-14" value="Komunikacja z aplikacją LLM" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
           <mxGeometry x="-640" y="680" width="200" height="80" as="geometry" />
         </mxCell>
+        <mxCell id="Mppl3Bngeb9TIjAJbDSZ-18" value="&lt;h1 style=&quot;margin-top: 0px;&quot;&gt;Moduły&lt;br&gt;&lt;/h1&gt;&lt;p&gt;- Testowe (sprawdzanie połączenia z aplikacją LLM czy odpowiada, w jakim czasie odpowiada, czy można wrzucać pliki)&lt;/p&gt;&lt;p&gt;- DOS&lt;/p&gt;- Generowanie niestosownych treści&lt;br&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;- Prompt injection z pliku&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;- Enumeracja (model cloning, informacje o technologiach, hasłach i plikach na systemie)&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;- Code Generation/Execution&lt;/div&gt;" style="text;html=1;whiteSpace=wrap;overflow=hidden;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="-820" y="840" width="820" height="250" as="geometry" />
+        </mxCell>
       </root>
     </mxGraphModel>
   </diagram>
