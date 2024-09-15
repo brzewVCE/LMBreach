@@ -1,3 +1,14 @@
+class Module:
+    def __init__(self, name, description, parameters, request, response, timeout=None):
+        self.name = name
+        self.description = description
+        self.parameters = parameters
+        self.request = request
+        self.response = response
+
+    def __str__(self):
+        return f"Name: {self.name}\nDescription: {self.description}\nParameters: {self.parameters}"
+
 def display_modules():
     pass
 
