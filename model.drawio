@@ -65,7 +65,7 @@
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="NHLAjTvj-q2QCi7Z65vW-58" value="Wraper do komponentów (wybieranie komponentu, wykonywanie, ustawianie parametrów,&lt;br&gt;&amp;nbsp;mierzenie czasu, sprawdzanie odpowiedzi, ustawianie celu)" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+        <mxCell id="NHLAjTvj-q2QCi7Z65vW-58" value="Wraper do komponentów (wybieranie komponentu, wykonywanie, ustawianie parametrów,&lt;br&gt;&amp;nbsp;sprawdzanie czasu, sprawdzanie odpowiedzi, ustawianie celu)" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
           <mxGeometry x="21" y="220.00333129882813" width="510" height="30" as="geometry" />
         </mxCell>
         <mxCell id="NHLAjTvj-q2QCi7Z65vW-60" value="Wyświetlenie menu i połączenie się z bazą danych" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="1" vertex="1">
@@ -74,7 +74,7 @@
         <mxCell id="NHLAjTvj-q2QCi7Z65vW-67" value="" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="20" y="360" width="510" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="NHLAjTvj-q2QCi7Z65vW-61" value="Komunikator z API (wysyłanie, odbieranie, czas oczekiwania)" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+        <mxCell id="NHLAjTvj-q2QCi7Z65vW-61" value="Komunikator z API (wysyłanie, odbieranie, mierzenie czasu oczekiwania)" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
           <mxGeometry x="25" y="360" width="425" height="30" as="geometry" />
         </mxCell>
         <mxCell id="Mppl3Bngeb9TIjAJbDSZ-8" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="Mppl3Bngeb9TIjAJbDSZ-7" target="Mppl3Bngeb9TIjAJbDSZ-9" edge="1">
