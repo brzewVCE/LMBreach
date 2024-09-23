@@ -1,6 +1,6 @@
 <mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:130.0) Gecko/20100101 Firefox/130.0" version="24.7.14">
   <diagram name="Strona-1" id="xsa9B9rwEk3ypq9Gwho9">
-    <mxGraphModel dx="1570" dy="357" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="1357" dy="255" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -31,7 +31,7 @@
         <mxCell id="NHLAjTvj-q2QCi7Z65vW-37" value="" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="30" y="285" width="480" height="70" as="geometry" />
         </mxCell>
-        <mxCell id="NHLAjTvj-q2QCi7Z65vW-38" value="Wszystkie moduły" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+        <mxCell id="NHLAjTvj-q2QCi7Z65vW-38" value="Wszystkie moduły (folder)" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
           <mxGeometry x="160" y="250" width="240" height="30" as="geometry" />
         </mxCell>
         <mxCell id="NHLAjTvj-q2QCi7Z65vW-39" value="&lt;div&gt;Kategorie (zależne od funkcjonaleności modułu, np. DOS)&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
@@ -67,8 +67,8 @@
         <mxCell id="NHLAjTvj-q2QCi7Z65vW-58" value="Wraper do modułów (wybieranie modułu, wykonywanie, ustawianie parametrów,&lt;br&gt;&amp;nbsp;sprawdzanie czasu, sprawdzanie odpowiedzi, ustawianie celu)" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
           <mxGeometry x="21" y="210.00333129882813" width="510" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="NHLAjTvj-q2QCi7Z65vW-60" value="Wyświetlenie menu i połączenie się z bazą danych" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="1" vertex="1">
-          <mxGeometry x="125" y="178" width="290" height="30" as="geometry" />
+        <mxCell id="NHLAjTvj-q2QCi7Z65vW-60" value="Wyświetlenie logo" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="1" vertex="1">
+          <mxGeometry x="210" y="178" width="120" height="30" as="geometry" />
         </mxCell>
         <mxCell id="NHLAjTvj-q2QCi7Z65vW-67" value="" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="20" y="360" width="510" height="30" as="geometry" />
