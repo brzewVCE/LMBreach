@@ -1,6 +1,6 @@
 <mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:130.0) Gecko/20100101 Firefox/130.0" version="24.7.14">
   <diagram name="Strona-1" id="xsa9B9rwEk3ypq9Gwho9">
-    <mxGraphModel dx="2220" dy="670" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="1291" dy="223" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -73,7 +73,7 @@
         <mxCell id="NHLAjTvj-q2QCi7Z65vW-67" value="" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="20" y="360" width="510" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="NHLAjTvj-q2QCi7Z65vW-61" value="Komunikator z API (request template, wysyłanie, odbieranie, mierzenie czasu oczekiwania na odpowiedź)" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+        <mxCell id="NHLAjTvj-q2QCi7Z65vW-61" value="Komunikator z API (wysyłanie, odbieranie, mierzenie czasu oczekiwania na odpowiedź)" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
           <mxGeometry x="57.5" y="360" width="425" height="30" as="geometry" />
         </mxCell>
         <mxCell id="Mppl3Bngeb9TIjAJbDSZ-8" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="Mppl3Bngeb9TIjAJbDSZ-7" target="Mppl3Bngeb9TIjAJbDSZ-9" edge="1">
