@@ -5,6 +5,7 @@ class Module:
         self.parameters = parameters
         self.request = request
         self.response = response
+        self.timeout = timeout
 
     def __str__(self):
         return f"Name: {self.name}\nDescription: {self.description}\nParameters: {self.parameters}"
