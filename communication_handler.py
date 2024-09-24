@@ -31,8 +31,8 @@ def message(message):
         response_text = response.json()["choices"][0]["message"]["content"]
         return(response_text)
     else:
-        return(f"Error: {response.status_code} - {response.text}")
+        return None
 
 if __name__ == "__main__":
-    response = message("Output only the following words: Connection with API established")
-    output.success(response)
+    if response := message("Establish connection with API"):
+        output.success(response)
