@@ -46,15 +46,15 @@ def logo():
                                                     
 def warning(message):
     # Print the warning message in red
-    warning_message = colored(f"[W]: {message}", "red")
+    warning_message = colored(f"[-]: {message}", "red")
     
 def info(message):
     # Print the info message in green
-    info_message = colored(f"[I]: {message}")
+    info_message = colored(f"[*]: {message}")
 
 def success(message):
     # Print the success message in green
-    success_message = colored(f"[S]: {message}", "green")
+    success_message = colored(f"[+]: {message}", "green")
 
 
 
