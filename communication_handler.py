@@ -19,18 +19,14 @@ def message(message):
         "max_tokens": -1,
         "stream": False
     }
+    try:
+        # Make the POST request
+        response = requests.post(url, headers=headers, data=json.dumps(data))
 
-    # Make the POST request
-    response = requests.post(url, headers=headers, data=json.dumps(data))
-    # Make the POST request
-    response = requests.post(url, headers=headers, data=json.dumps(data))
-
-    # Check if the request was successful
-    if response.status_code == 200:
-        # Print the response
         response_text = response.json()["choices"][0]["message"]["content"]
         return(response_text)
-    else:
+    except Exception as e:
+        output.warning(e)
         return None
 
 if __name__ == "__main__":
