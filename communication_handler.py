@@ -30,5 +30,5 @@ def message(message):
         return None
 
 if __name__ == "__main__":
-    if response := message("Establish connection with API"):
+    if response := message("Output only the following text: API connection successful"):
         output.success(response)
