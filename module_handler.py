@@ -48,8 +48,8 @@ def import_and_execute(module_name, http_address, payload=None):
             args = []
             kwargs = {}
             
-            # For if payload parameter is not none then pass the payload
-            if payload is not None:
+            # For if required_payload is true in class then pass the payload
+            if exploit_instance.payload_required:
                 kwargs['payload'] = payload
 
             print(f"Executing method: {method_name} with arguments {kwargs}")
