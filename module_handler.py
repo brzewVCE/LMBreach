@@ -4,8 +4,8 @@ import output_handler as output
 
 def import_module(module_name):
     # Dynamically import the module
-    module = importlib.import_module(module_name)
-
+    module_path = f"modules.{module_name}"
+    module = importlib.import_module(module_path)
     # Get all classes in the module
     class_name = None
     for name, obj in vars(module).items():
