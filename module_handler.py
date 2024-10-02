@@ -39,21 +39,16 @@ def import_and_execute(module_name, http_address, payload=None):
         method_signature = inspect.signature(method)
         params = method_signature.parameters
         
-        # Check if the method takes any parameters and handle accordingly
-        if len(params) == 0:
-            print(f"Executing method: {method_name}()")
-            method()  # Execute if no parameters are required
-        else:
-            # Dynamically generate dummy arguments (customize as needed)
-            args = []
-            kwargs = {}
-            
-            # For if required_payload is true in class then pass the payload
-            if exploit_instance.payload_required:
-                kwargs['payload'] = payload
 
-            print(f"Executing method: {method_name} with arguments {kwargs}")
-            method(**kwargs)  # Execute the method with the generated arguments
+        kwargs = {}
+        
+        # For if required_payload is true in class then pass the payload
+        kwargs['http_address'] = http_address
+        if exploit_instance.payload_required:
+            kwargs['payload'] = payload
+
+        print(f"Executing method: {method_name} with arguments {kwargs}")
+        method(**kwargs)  # Execute the method with the generated arguments
 
 if __name__ == "__main__":
     # Define the module name (without .py)
