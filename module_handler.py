@@ -27,7 +27,7 @@ def print_info(exploit_instance):
     for attr, value in exploit_instance.__dict__.items():
         print(f"  {attr} = {value}")
 
-def import_and_execute(module_name, http_address, payload=None):
+def execute_exploit(exploit_instance, http_address, payload=None):
 
     # Get all methods from the instance
     methods = [method for method in dir(exploit_instance) if callable(getattr(exploit_instance, method)) and not method.startswith("__")]
@@ -42,12 +42,12 @@ def import_and_execute(module_name, http_address, payload=None):
         # For if required_payload is true in class then pass the payload
         kwargs['http_address'] = http_address
         if exploit_instance.payload_required & (payload is None):
-            ouptut.error(f"Module {module_name} requires a payload but none was provided")
+            ouptut.error(f"{exploit_instance} requires a payload but none was provided")
             return None
         elif exploit_instance.payload_required:
             kwargs['payload'] = payload
 
-        output.info(f"Executing method: {method_name} with arguments {kwargs}")
+        output.info(f"{exploit_instance.name}, arguments {kwargs}")
         
         return method(**kwargs)  # Execute the method with the generated arguments
 
@@ -57,5 +57,5 @@ if __name__ == "__main__":
     module_name = 'exploit_module'
     exploit_instance = import_module(module_name)
     print_info(exploit_instance)
-    result = import_and_execute(exploit_instance, http_address='http://localhost', payload='test_payload')
+    result = execute_exploit(exploit_instance, http_address='http://localhost', payload='test_payload')
     print(result)
