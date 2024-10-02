@@ -48,13 +48,9 @@ def import_and_execute(module_name, http_address, payload=None):
             args = []
             kwargs = {}
             
-            for param_name, param in params.items():
-                if param.default == param.empty:  # If parameter is mandatory
-                    # For simplicity, pass a default argument value based on name/type (you can customize this logic)
-                    if 'payload' in param_name.lower():
-                        kwargs[param_name] = payload
-                else:
-                    kwargs[param_name] = param.default  # Use the default value for optional params
+            # For if payload parameter is not none then pass the payload
+            if payload is not None:
+                kwargs['payload'] = payload
 
             print(f"Executing method: {method_name} with arguments {kwargs}")
             method(**kwargs)  # Execute the method with the generated arguments
