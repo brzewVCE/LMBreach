@@ -28,28 +28,21 @@ def print_info(exploit_instance):
         print(f"  {attr} = {value}")
 
 def execute_exploit(exploit_instance, http_address, payload=None):
+    method = getattr(exploit_instance, "main")
+    
+    kwargs = {}
+    
+    # For if required_payload is true in class then pass the payload
+    kwargs['http_address'] = http_address
+    if exploit_instance.payload_required & (payload is None):
+        output.error(f"{exploit_instance} requires a payload but none was provided")
+        return None
+    elif exploit_instance.payload_required:
+        kwargs['payload'] = payload
 
-    # Get all methods from the instance
-    methods = [method for method in dir(exploit_instance) if callable(getattr(exploit_instance, method)) and not method.startswith("__")]
-
-    for method_name in methods:
-        method = getattr(exploit_instance, method_name)
-        method_signature = inspect.signature(method)
-        params = method_signature.parameters
-        
-        kwargs = {}
-        
-        # For if required_payload is true in class then pass the payload
-        kwargs['http_address'] = http_address
-        if exploit_instance.payload_required & (payload is None):
-            ouptut.error(f"{exploit_instance} requires a payload but none was provided")
-            return None
-        elif exploit_instance.payload_required:
-            kwargs['payload'] = payload
-
-        output.info(f"{exploit_instance.name}, arguments {kwargs}")
-        
-        return method(**kwargs)  # Execute the method with the generated arguments
+    output.info(f"{exploit_instance.name}, arguments {kwargs}")
+    
+    return method(**kwargs)  # Execute the method with the generated arguments
 
 
 if __name__ == "__main__":
