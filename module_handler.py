@@ -1,5 +1,4 @@
 import importlib
-import inspect
 import output_handler as output
 
 def import_module(module_name):
@@ -25,7 +24,7 @@ def import_module(module_name):
 
 def print_info(exploit_instance):
     for attr, value in exploit_instance.__dict__.items():
-        print(f"  {attr} = {value}")
+        output.colored(f"  {attr} = {value}", color='light_blue')
 
 def execute_exploit(exploit_instance, http_address, payload=None):
     method = getattr(exploit_instance, "main")
@@ -40,15 +39,21 @@ def execute_exploit(exploit_instance, http_address, payload=None):
     elif exploit_instance.payload_required:
         kwargs['payload'] = payload
 
-    output.info(f"{exploit_instance.name}, arguments {kwargs}")
+    output.info(f"Running {exploit_instance.name} with arguments {kwargs}")
     
     return method(**kwargs)  # Execute the method with the generated arguments
 
 
 if __name__ == "__main__":
     # Define the module name (without .py)
-    module_name = 'exploit_module'
+    module_name = 'test_communication'
     exploit_instance = import_module(module_name)
     print_info(exploit_instance)
-    result = execute_exploit(exploit_instance, http_address='http://localhost', payload='test_payload')
-    print(result)
+    result = execute_exploit(exploit_instance, http_address='http://localhost:1234/v1/chat/completions', payload='test_payload')
+    exploit_name = exploit_instance.name
+    if result:
+        output.success(f"{exploit_name} executed successfully")
+    elif result is None:
+        output.error(f"{exploit_name} returned None")
+    else:
+        output.error(f"{exploit_name} failed")
