@@ -14,11 +14,8 @@ class ExploitModule:
         }
         data = {
             "messages": [
-                { "role": "system", "content": "Always answer" },
                 { "role": "user", "content": "Output only two letters: 'OK'" }
             ],
-            "temperature": 0.7,
-            "max_tokens": -1,
             "stream": False
         }
 
