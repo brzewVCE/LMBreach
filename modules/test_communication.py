@@ -30,7 +30,8 @@ class ExploitModule:
             # Extract the content from the choices
             content = response_data['choices'][0]['message']['content']
             print(f"Connection successful. Received content: {content}")
-            return True, "Connection successful"
+            note = "Connection successful"
+            return True, note
         except requests.exceptions.RequestException as e:
             print(f"Error occurred: {str(e)}")
             return False, str(e)
