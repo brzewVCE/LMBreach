@@ -49,11 +49,11 @@ if __name__ == "__main__":
     module_name = 'test_communication'
     exploit_instance = import_module(module_name)
     print_info(exploit_instance)
-    result, response = execute_exploit(exploit_instance, http_address='http://localhost:1234/v1/chat/completions', payload='test_payload')
+    result, note = execute_exploit(exploit_instance, http_address='http://localhost:1234/v1/chat/completions', payload='test_payload')
     exploit_name = exploit_instance.name
     if result:
-        output.success(f"{exploit_name} executed successfully. Response: {response}, result: {result}")
+        output.success(f"{exploit_name} executed successfully. Note: {note}, result: {result}")
     elif result is None:
         output.warning(f"{exploit_name} returned None, no result")
     else:
-        output.warning(f"{exploit_name} failed. Response: {response}, Result: {result}")
+        output.warning(f"{exploit_name} failed. Note: {note}, Result: {result}")
