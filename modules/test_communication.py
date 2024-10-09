@@ -3,7 +3,7 @@ import json
 
 class ExploitModule:
     def __init__(self):
-        self.name = 'API Test'
+        self.name = 'API Connection Test'
         self.description = 'A test module for API communication'
         self.payload_required = False  # Indicating this module does not need a payload by default
 
