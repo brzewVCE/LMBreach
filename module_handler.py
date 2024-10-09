@@ -52,8 +52,8 @@ if __name__ == "__main__":
     success, note = execute_exploit(exploit_instance, http_address='http://localhost:1234/v1/chat/completions', payload='test_payload')
     exploit_name = exploit_instance.name
     if success:
-        output.success(f"{exploit_name} executed successfully. Success: {success}, Note: {note}")
+        output.success(f"{exploit_name} executed. Success: {success}, Note: {note}")
     elif success is None:
-        output.warning(f"{exploit_name} returned None, no success")
+        output.warning(f"{exploit_name} failed to execute. Note: {note}")
     else:
-        output.warning(f"{exploit_name} failed. Success: {success}, Note: {note}")
+        output.warning(f"{exploit_name} executed. Success: {success}, Note: {note}")
