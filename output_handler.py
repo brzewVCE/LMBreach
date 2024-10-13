@@ -28,8 +28,8 @@ def colored(text, color="default"):
     # Get the selected color code, or default if not found
     color_code = colors.get(color, colors["default"])
     
-    # Print the colored text
-    print(f"{color_code}{text}{Style.RESET_ALL}")
+    # Return the colored text
+    return f"{color_code}{text}{Style.RESET_ALL}"
 
 def logo():
     art = """
@@ -41,27 +41,31 @@ def logo():
     \_____|_|  |_|____/|_|  \___|\__,_|\___|_| |_|
                                                        
     """
-    colored(art, "red")
-    
-                                                    
+    print(colored(art, "red"))
+
 def warning(message):
-    # Print the warning message in red
-    warning_message = colored(f"[-]: {message}", "red")
-    
+    # Print the warning message with only the "icon" in red
+    icon = colored("[-]", "red")
+    print(f"{icon} {message}")
+
 def info(message):
-    # Print the info message in green
-    info_message = colored(f"[*]: {message}")
+    # Print the info message with only the "icon" in blue
+    icon = colored("[*]", "blue")
+    print(f"{icon} {message}")
 
 def success(message):
-    # Print the success message in green
-    success_message = colored(f"[+]: {message}", "green")
+    # Print the success message with only the "icon" in green
+    icon = colored("[+]", "green")
+    print(f"{icon} {message}")
 
-
-
-    
+def index(index, filename):
+    # Print the index and filename in light blue
+    index = colored(f"[{index}]", "light_blue")
+    print(f"{index} {filename}")
 
 if __name__ == "__main__":
     logo()
     warning("Error message")
     info("Info message")
     success("Success message")
+    index(1, "file1.txt")

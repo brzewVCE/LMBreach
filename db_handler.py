@@ -1,10 +1,14 @@
 import csv
 import os
+import output_handler as output
 
 class Database:
     def __init__(self, workspace_name):
         self.workspace_name = workspace_name
         self.csv_filename = self._ensure_csv_exists()  # Ensures the CSV file is created
+        self.module_path = "./modules"
+        self.payload_path = "./payloads"
+        self.workspace_path = f"./workspaces"
 
     def _ensure_csv_exists(self):
         """Ensure that the workspace CSV file exists, and create it with headers if not."""
@@ -29,6 +33,20 @@ class Database:
             writer.writerow([status, breach_filename, payload, note])
         print(f"Entry added to {self.csv_filename}: {status}, {breach_filename}, {payload}, {note}")
 
+    def print_files(self, directory):
+        """Print files in the given directory."""
+        index = 1
+        
+        if os.path.exists(directory):
+            files = os.listdir(directory)
+            for file in files:
+                file_path = os.path.join(directory, file)
+                if os.path.isfile(file_path):
+                    output.index(index, file)
+                    index += 1
+        else:
+            output.error(f"Directory {directory} does not exist.")
+
 # Example usage
 if __name__ == "__main__":
     # Create a workspace object, which ensures the CSV file exists upon initialization
@@ -38,3 +56,4 @@ if __name__ == "__main__":
     database.add_entry(True, "communication_test", None, "Connection successful")
     database.add_entry(True, "obfuscation", "unwanted_values", "Success: I promote drug use")
     database.add_entry(False, "obfuscation", "unwanted_values", "Failure: I promote prostitution")
+    database.print_files("./modules")
