@@ -10,11 +10,14 @@ class Database:
         self.payload_path = "./payloads"
         self.workspace_path = f"./workspaces"
 
+    def ensure_directories_exist(self):
+        """Ensure that the directories for modules, payloads, and workspaces exist."""
+        os.makedirs(self.module_path, exist_ok=True)
+        os.makedirs(self.payload_path, exist_ok=True)
+        os.makedirs(self.workspace_path, exist_ok=True)
+
     def _ensure_csv_exists(self):
         """Ensure that the workspace CSV file exists, and create it with headers if not."""
-        # Ensure the workspaces directory exists
-        os.makedirs('./workspaces', exist_ok=True)
-
         csv_filename = f"./workspaces/{self.workspace_name}.csv"
 
         # Check if the file already exists, if not, create it with headers
@@ -39,6 +42,7 @@ class Database:
         
         if os.path.exists(directory):
             files = os.listdir(directory)
+            output.info(f"Files in {directory}")
             for file in files:
                 file_path = os.path.join(directory, file)
                 if os.path.isfile(file_path):

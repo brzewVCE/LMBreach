@@ -59,8 +59,8 @@ def success(message):
     print(f"{icon} {message}")
 
 def index(index, filename):
-    # Print the index and filename in light blue
-    index = colored(f"[{index}]", "light_blue")
+    # Print the index and filename in cyan
+    index = colored(f"[{index}]", "cyan")
     print(f"{index} {filename}")
 
 if __name__ == "__main__":
