@@ -78,6 +78,23 @@ class Database:
         else:
             output.warning(f"{dictionary_name} is empty.")
 
+    def get_filename_by_index(self, index, dict_type):
+        """Return the filename from the modules or payloads dictionary based on the index."""
+        if dict_type.lower() == "module":
+            dictionary = self.modules_dict
+        elif dict_type.lower() == "payload":
+            dictionary = self.payloads_dict
+        else:
+            output.warning(f"Unknown dictionary type: {dict_type}. Choose either 'modules' or 'payloads'.")
+            return None
+
+        filename = dictionary.get(index)
+        if filename:
+            return filename
+        else:
+            output.warning(f"No file found at index {index} in {dict_type}.")
+            return None
+
     def sort_notes(self):
         """Sorts the entries in the CSV file so that success=True entries are listed first."""
         with open(self.csv_filename, mode='r', newline='') as file:
@@ -98,6 +115,7 @@ class Database:
         output.notes(self.csv_filename)
 
 
+
 # Example usage
 if __name__ == "__main__":
     database = Database("Gemini")
@@ -110,6 +128,13 @@ if __name__ == "__main__":
     # Print the contents of the modules or payloads dictionaries
     database.print_dictionary("modules")
     database.print_dictionary("payloads")
+
+    # Get a filename from a chosen index
+    module_filename = database.get_filename_by_index(1, "module")
+    payload_filename = database.get_filename_by_index(2, "payload")
+    
+    output.info(f"Module file at index 1: {module_filename}")
+    output.info(f"Payload file at index 2: {payload_filename}")
 
     # Print notes
     database.print_notes()
