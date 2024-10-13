@@ -5,10 +5,12 @@ import output_handler as output
 class Database:
     def __init__(self, workspace_name):
         self.workspace_name = workspace_name
-        self.csv_filename = self._ensure_csv_exists()  # Ensures the CSV file is created
         self.module_path = "./modules"
         self.payload_path = "./payloads"
         self.workspace_path = f"./workspaces"
+        self.ensure_directories_exist()
+        self.csv_filename = self.ensure_csv_exists()  # Ensures the CSV file is created
+        
 
     def ensure_directories_exist(self):
         """Ensure that the directories for modules, payloads, and workspaces exist."""
@@ -16,7 +18,7 @@ class Database:
         os.makedirs(self.payload_path, exist_ok=True)
         os.makedirs(self.workspace_path, exist_ok=True)
 
-    def _ensure_csv_exists(self):
+    def ensure_csv_exists(self):
         """Ensure that the workspace CSV file exists, and create it with headers if not."""
         csv_filename = f"./workspaces/{self.workspace_name}.csv"
 

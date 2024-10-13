@@ -65,25 +65,34 @@ def index(index, filename):
     print(f"{index} {filename}")
 
 def notes(csv_filename):
-        """Reads the CSV file and prints entries based on the 'success' field (True/False)."""
+        """Reads the CSV file and prints entries with colored categories."""
         try:
             with open(csv_filename, mode='r', newline='') as file:
                 reader = csv.DictReader(file)
-                info(f"Entries from {csv_filename}")
                 for row in reader:
                     status = row.get('success')
                     breach_filename = row.get('breach_filename', 'N/A')
                     payload = row.get('payload', 'N/A')
                     note = row.get('note', 'N/A')
-                    
-                    # Build the message
-                    message = f"File: {breach_filename}, Payload: {payload}, Note: {note}"
-                    
-                    # Print based on the success field
-                    if status == 'True':  # Check for the string 'True'
-                        success(message)
-                    elif status == 'False':  # Check for the string 'False'
-                        warning(message)
+
+                    # Build the colored message
+                    colored_breach_filename = colored(f"File: ", "blue")+colored(f"{breach_filename}")
+                    if payload:
+                        colored_payload = colored(f"Payload: ", "light_green")+colored(f"{payload}")
+                    else:
+                        colored_payload = ""
+                    colored_note = colored(f"Note: ", "cyan")+colored(f"{note}")
+
+                    # Assemble full message
+                    message = f"{colored_breach_filename} {colored_payload} {colored_note}"
+
+                    # Output with success or warning icon
+                    if status == 'True':  # Successful case
+                        icon = colored("[+]", "green")
+                        print(f"{icon} {message}")
+                    elif status == 'False':  # Failed case
+                        icon = colored("[-]", "red")
+                        print(f"{icon} {message}")
                     else:
                         print(f"[?] Invalid status for entry: {message}")
         except FileNotFoundError:
