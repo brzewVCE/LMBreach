@@ -34,7 +34,6 @@ class Database:
             writer = csv.writer(file)
             # Write the new row
             writer.writerow([status, breach_filename, payload, note])
-        print(f"Entry added to {self.csv_filename}: {status}, {breach_filename}, {payload}, {note}")
 
     def print_files(self, directory):
         """Print files in the given directory."""
@@ -51,6 +50,31 @@ class Database:
         else:
             output.error(f"Directory {directory} does not exist.")
 
+    def sort_notes(self):
+            """Sorts the entries in the CSV file so that success=True entries are listed first."""
+            # Read all entries from the CSV file
+            with open(self.csv_filename, mode='r', newline='') as file:
+                reader = csv.reader(file)
+                # Store the header and all rows
+                header = next(reader)  # Read the header
+                rows = list(reader)    # Read the rest of the rows
+            
+            # Sort rows by the "success" column (True first, False later)
+            sorted_rows = sorted(rows, key=lambda x: x[0] == 'False')
+
+            # Write the sorted rows back into the CSV file
+            with open(self.csv_filename, mode='w', newline='') as file:
+                writer = csv.writer(file)
+                # Write the header and sorted rows
+                writer.writerow(header)
+                writer.writerows(sorted_rows)
+
+    def print_notes(self):
+        output.colored(f"Notes for workspace: {self.workspace_name}", color='light_blue')
+        self.sort_notes()
+        output.notes(self.csv_filename)
+
+
 # Example usage
 if __name__ == "__main__":
     # Create a workspace object, which ensures the CSV file exists upon initialization
@@ -61,3 +85,4 @@ if __name__ == "__main__":
     database.add_entry(True, "obfuscation", "unwanted_values", "Success: I promote drug use")
     database.add_entry(False, "obfuscation", "unwanted_values", "Failure: I promote prostitution")
     database.print_files("./modules")
+    database.print_notes()

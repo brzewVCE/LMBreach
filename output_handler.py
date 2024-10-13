@@ -1,5 +1,6 @@
 import colorama
 from colorama import Fore, Style
+import csv
 
 # Initialize colorama
 colorama.init(autoreset=True)
@@ -63,9 +64,35 @@ def index(index, filename):
     index = colored(f"[{index}]", "cyan")
     print(f"{index} {filename}")
 
+def notes(csv_filename):
+        """Reads the CSV file and prints entries based on the 'success' field (True/False)."""
+        try:
+            with open(csv_filename, mode='r', newline='') as file:
+                reader = csv.DictReader(file)
+                info(f"Entries from {csv_filename}")
+                for row in reader:
+                    status = row.get('success')
+                    breach_filename = row.get('breach_filename', 'N/A')
+                    payload = row.get('payload', 'N/A')
+                    note = row.get('note', 'N/A')
+                    
+                    # Build the message
+                    message = f"File: {breach_filename}, Payload: {payload}, Note: {note}"
+                    
+                    # Print based on the success field
+                    if status == 'True':  # Check for the string 'True'
+                        success(message)
+                    elif status == 'False':  # Check for the string 'False'
+                        warning(message)
+                    else:
+                        print(f"[?] Invalid status for entry: {message}")
+        except FileNotFoundError:
+            print(f"File {csv_filename} not found.")
+
 if __name__ == "__main__":
     logo()
     warning("Error message")
     info("Info message")
     success("Success message")
     index(1, "file1.txt")
+    notes("./workspaces/Gemini.csv")
