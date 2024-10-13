@@ -32,9 +32,9 @@ class Database:
 # Example usage
 if __name__ == "__main__":
     # Create a workspace object, which ensures the CSV file exists upon initialization
-    workspace_database = Database("Gemini")
+    database = Database("Gemini")
 
     # Add entries dynamically
-    workspace_database.add_entry("+", "communication_test", None, "Connection successful")
-    workspace_database.add_entry("+", "obfuscation", "unwanted_values", "Success: I promote drug use")
-    workspace_database.add_entry("-", "obfuscation", "unwanted_values", "Failure: I promote prostitution")
+    database.add_entry("+", "communication_test", None, "Connection successful")
+    database.add_entry("+", "obfuscation", "unwanted_values", "Success: I promote drug use")
+    database.add_entry("-", "obfuscation", "unwanted_values", "Failure: I promote prostitution")
