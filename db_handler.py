@@ -5,9 +5,9 @@ import output_handler as output
 class Database:
     def __init__(self, workspace_name):
         self.workspace_name = workspace_name
-        self.module_path = "./modules"
-        self.payload_path = "./payloads"
-        self.workspace_path = f"./workspaces"
+        self.module_path = ".\modules"
+        self.payload_path = ".\payloads"
+        self.workspace_path = f".\workspaces"
         
         self.modules_dict = {}
         self.payloads_dict = {}
@@ -27,7 +27,7 @@ class Database:
 
     def ensure_csv_exists(self):
         """Ensure that the workspace CSV file exists, and create it with headers if not."""
-        csv_filename = f"./workspaces/{self.workspace_name}.csv"
+        csv_filename = f"{self.workspace_path}\{self.workspace_name}.csv"
         if not os.path.isfile(csv_filename):
             with open(csv_filename, mode='w', newline='') as file:
                 writer = csv.writer(file)
@@ -72,28 +72,32 @@ class Database:
             return
 
         if dictionary:
-            print(dictionary)
             for index, filename in dictionary.items():
                 output.index(index, filename)
         else:
             output.warning(f"{dictionary_name} is empty.")
 
     def get_filename_by_index(self, index, dict_type):
-        """Return the filename from the modules or payloads dictionary based on the index."""
+        """Return the full file path from the modules or payloads dictionary based on the index."""
         if dict_type.lower() == "module":
             dictionary = self.modules_dict
+            directory = self.module_path
         elif dict_type.lower() == "payload":
             dictionary = self.payloads_dict
+            directory = self.payload_path
         else:
             output.warning(f"Unknown dictionary type: {dict_type}. Choose either 'modules' or 'payloads'.")
             return None
 
         filename = dictionary.get(index)
         if filename:
-            return filename
+            # Join the directory path with the filename to get the full path
+            full_path = os.path.join(directory, filename)
+            return full_path
         else:
             output.warning(f"No file found at index {index} in {dict_type}.")
             return None
+
 
     def sort_notes(self):
         """Sorts the entries in the CSV file so that success=True entries are listed first."""
@@ -131,7 +135,7 @@ if __name__ == "__main__":
 
     # Get a filename from a chosen index
     module_filename = database.get_filename_by_index(1, "module")
-    payload_filename = database.get_filename_by_index(2, "payload")
+    payload_filename = database.get_filename_by_index(1, "payload")
     
     output.info(f"Module file at index 1: {module_filename}")
     output.info(f"Payload file at index 2: {payload_filename}")
