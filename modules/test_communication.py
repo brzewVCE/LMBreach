@@ -5,7 +5,7 @@ class ExploitModule:
     def __init__(self):
         self.name = 'API Connection Test'
         self.description = 'A test module for API communication'
-        self.payload_required = True # Indicating this module does not need a payload by default
+        self.payload_required = False # Indicating this module does not need a payload by default
 
     def main(self, http_address, payload=None):
         """Performs the exploit."""
