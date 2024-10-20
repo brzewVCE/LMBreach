@@ -6,6 +6,7 @@ class ExploitModule:
         self.name = 'API Connection Test'
         self.description = 'A test module for API communication'
         self.payload_required = False # Indicating this module does not need a payload by default
+        self.message = "Output only two letters: 'OK'"
 
     def main(self, http_address, payload=None):
         """Performs the exploit."""
@@ -14,7 +15,7 @@ class ExploitModule:
         }
         data = {
             "messages": [
-                { "role": "user", "content": "Output only two letters: 'OK'" }
+                { "role": "user", "content": self.message }
             ],
             "stream": False
         }
