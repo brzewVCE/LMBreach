@@ -133,6 +133,29 @@ class Database:
         output.warning(f"No file found with name {name} in {dict_type}.")
         return None
 
+    def get_name_by_filename(self, filename, dict_type):
+        """Return the name of the file from the modules or payloads dictionary based on the full path."""
+        if dict_type.lower() == "module":
+            dictionary = self.modules_dict
+            directory = self.module_path
+        elif dict_type.lower() == "payload":
+            dictionary = self.payloads_dict
+            directory = self.payload_path
+        elif dict_type.lower() == "workspace":
+            dictionary = self.workspaces_dict
+            directory = self.workspace_path
+        else:
+            output.warning(f"Unknown dictionary type: {dict_type}")
+            return None
+
+        for index, file in dictionary.items():
+            full_path = os.path.join(directory, file)
+            if full_path == filename:
+                return file
+
+        output.warning(f"No file found with path {filename} in {dict_type}.")
+        return None
+
     def sort_notes(self):
         """Sorts the entries in the CSV file so that success=True entries are listed first."""
         with open(self.csv_filename, mode='r', newline='') as file:
@@ -211,4 +234,8 @@ if __name__ == "__main__":
 
     # Print notes
     database.print_notes()
+
+    # Get a filename from a chosen name
+    module_filename = database.get_name_by_filename(module_filename, "module")
+    print(f"Module file name: {module_filename}")
 

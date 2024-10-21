@@ -6,7 +6,7 @@ def initialize_session():
     """Initializes the session with a temporary workspace and sets the HTTP address."""
     output.logo()
     default_http_address = "http://localhost:1234/v1/chat/completions"
-    http_address = input(f"Enter API HTTP address [{default_http_address}]: ") or default_http_address
+    http_address = input(f"Enter API HTTP address or leave default [{default_http_address}]: ") or default_http_address
     session_database = Database("temp")
     return session_database, "temp", None, None, http_address, None
 
@@ -40,8 +40,7 @@ def show_session_info(session_database, current_workspace, module_handler, curre
     else:
         output.warning("Module: None loaded")
     if current_payload:
-        payload_path = session_database.get_filename_by_index(current_payload, 'payload')
-        output.info(f"Payload: {payload_path}")
+        output.info(f"Payload: {current_payload}")
     else:
         output.warning("Payload: None loaded")
     output.info(f"HTTP Address: {http_address}")
@@ -83,39 +82,32 @@ def handle_use_command(session_database, command_parts, current_workspace, curre
             module_handler = None
             output.success(f"Created or switched to workspace: {identifier}")
 
-    elif use_type == 'module':
+    elif use_type in ['module', 'payload']:
+        item_type = use_type  # 'module' or 'payload'
         if identifier.isdigit():
-            module_path = session_database.get_filename_by_index(int(identifier), 'module')
-            if module_path:
-                current_module = int(identifier)
-                module_handler = Handler(module_path)
-                output.success(f"Loaded module at index {identifier}: {module_path}")
+            item_path = session_database.get_filename_by_index(int(identifier), item_type)
+            if item_path:
+                item_name = session_database.get_name_by_filename(item_path, item_type)
+                if item_type == 'module':
+                    current_module = item_name
+                    module_handler = Handler(item_path)
+                elif item_type == 'payload':
+                    current_payload = item_name
+                output.success(f"Loaded {item_type} at index {identifier}: {item_path}")
             else:
-                output.warning(f"Module at index {identifier} not found.")
+                output.warning(f"{item_type.capitalize()} at index {identifier} not found.")
         else:
-            module_path = session_database.get_filename_by_name(identifier, 'module')
-            if module_path:
-                current_module = identifier
-                module_handler = Handler(module_path)
-                output.success(f"Loaded module by name [{identifier}]: {module_path}")
+            item_path = session_database.get_filename_by_name(identifier, item_type)
+            if item_path:
+                if item_type == 'module':
+                    current_module = identifier
+                    module_handler = Handler(item_path)
+                elif item_type == 'payload':
+                    current_payload = identifier
+                output.success(f"Loaded {item_type} by name [{identifier}]: {item_path}")
             else:
-                output.warning(f"Module with name [{identifier}] not found.")
+                output.warning(f"{item_type.capitalize()} with name [{identifier}] not found.")
 
-    elif use_type == 'payload':
-        if identifier.isdigit():
-            payload_path = session_database.get_filename_by_index(int(identifier), 'payload')
-            if payload_path:
-                current_payload = int(identifier)
-                output.success(f"Loaded payload at index {identifier}: {payload_path}")
-            else:
-                output.warning(f"Payload at index {identifier} not found.")
-        else:
-            payload_path = session_database.get_filename_by_name(identifier, 'payload')
-            if payload_path:
-                current_payload = identifier
-                output.success(f"Loaded payload by name [{identifier}]: {payload_path}")
-            else:
-                output.warning(f"Payload with name [{identifier}] not found.")
 
     return session_database, current_workspace, current_module, current_payload, module_handler
 
@@ -179,7 +171,11 @@ def main():
     while True:
         try:
             # Get user input
-            user_input = input("").strip()
+            colored_workspace = output.colored(f"{current_workspace}", color='light_gray')
+            colored_module = output.colored(f"{current_module}", color='yellow')
+            colored_payload = output.colored(f"{current_payload}", color='magenta')
+            colored_input = f"{colored_workspace} > {colored_module} > {colored_payload}: "
+            user_input = input(f"{colored_input}").strip()
             command_parts = user_input.lower().split()
 
             if len(command_parts) == 0:
