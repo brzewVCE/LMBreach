@@ -162,7 +162,7 @@ class Database:
 
 # Example usage
 if __name__ == "__main__":
-    database = Database("Gemini")
+    database = Database("TestWorkspace")
 
     # Add entries dynamically
     database.add_entry(True, "communication_test", None, "Connection successful")
