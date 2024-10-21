@@ -11,13 +11,14 @@ class Database:
         
         self.modules_dict = {}
         self.payloads_dict = {}
+        self.workspaces_dict = {}
 
         # Ensure directories and CSV file exist
         self.ensure_directories_exist()
         self.csv_filename = self.ensure_csv_exists()
 
         # Automatically load files into dictionaries on initialization
-        self.load_modules_and_payloads()
+        self.load_dirs()
 
     def ensure_directories_exist(self):
         """Ensure that the directories for modules, payloads, and workspaces exist."""
@@ -54,10 +55,11 @@ class Database:
         else:
             output.warning(f"Directory {directory} does not exist.")
 
-    def load_modules_and_payloads(self):
+    def load_dirs(self):
         """Load both modules and payloads into their respective dictionaries."""
         self.load_files_to_dict(self.module_path, self.modules_dict)
         self.load_files_to_dict(self.payload_path, self.payloads_dict)
+        self.load_files_to_dict(self.workspace_path, self.workspaces_dict)
 
     def print_dictionary(self, dict_type):
         """Print the contents of either the modules or payloads dictionary based on the argument."""
@@ -67,8 +69,11 @@ class Database:
         elif dict_type.lower() == "payloads":
             dictionary_name = "Payloads"
             dictionary = self.payloads_dict
+        elif dict_type.lower() == "workspaces":
+            dictionary_name = "Workspaces"
+            dictionary = self.workspaces_dict
         else:
-            output.warning(f"Unknown dictionary type: {dict_type}. Choose either 'modules' or 'payloads'.")
+            output.warning(f"Unknown dictionary type: {dict_type}")
             return
 
         if dictionary:
@@ -86,8 +91,11 @@ class Database:
         elif dict_type.lower() == "payload":
             dictionary = self.payloads_dict
             directory = self.payload_path
+        elif dict_type.lower() == "workspace":
+            dictionary = self.workspaces_dict
+            directory = self.workspace_path
         else:
-            output.warning(f"Unknown dictionary type: {dict_type}. Choose either 'modules' or 'payloads'.")
+            output.warning(f"Unknown dictionary type: {dict_type}")
             return None
 
         filename = dictionary.get(index)
@@ -151,13 +159,6 @@ class Database:
             print(f"File {self.csv_filename} not found.")
 
 
-    def print_workspaces(self):
-        """List all workspaces in the workspaces directory."""
-        workspaces = os.listdir(self.workspace_path)
-        output.info("Workspaces:")
-        # Print each workspace name with index
-        for index, workspace in enumerate(workspaces, start=1):
-            output.index(index, workspace)
 
 
 # Example usage
@@ -172,19 +173,16 @@ if __name__ == "__main__":
     # Print the contents of the modules or payloads dictionaries
     database.print_dictionary("modules")
     database.print_dictionary("payloads")
+    database.print_dictionary("workspaces")
 
     # Get a filename from a chosen index
     module_filename = database.get_filename_by_index(1, "module")
     payload_filename = database.get_filename_by_index(1, "payload")
+    workspace_filename = database.get_filename_by_index(1, "workspace")
     
     output.info(f"Module file at index 1: {module_filename}")
     output.info(f"Payload file at index 1: {payload_filename}")
 
     # Print notes
-    database.print_notes()
-
-    # List all workspaces
-    database.print_workspaces()
-
     database.print_notes()
 
