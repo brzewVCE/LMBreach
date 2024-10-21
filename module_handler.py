@@ -63,24 +63,35 @@ class Handler:
                 results.append(result)
                 
                 if success:
-                    output.success(f"{self.breach_instance.name} executed successfully with line: {line}. Success: {success}, Note: {note}")
+                    output.success(f"{self.breach_instance.name} with line: {line}. Note: {note}")
                 elif success is None:
-                    output.warning(f"{self.breach_instance.name} failed to execute with line: {line}. Note: {note}")
+                    output.info(f"{self.breach_instance.name} failed to execute with line: {line}. Note: {note}")
                 else:
-                    output.warning(f"{self.breach_instance.name} executed with issues for line: {line}. Success: {success}, Note: {note}")
+                    output.warning(f"{self.breach_instance.name} for line: {line}. Note: {note}")
         else:
             kwargs = {'http_address': http_address}
             output.info(f"Running {self.breach_instance.name} without payload")
             success, note = method(**kwargs)
+            if success:
+                output.success(f"{self.breach_instance.name} Note: {note}")
+            elif success is None:
+                output.info(f"{self.breach_instance.name} failed to execute. Note: {note}")
+            else:
+                output.warning(f"{self.breach_instance.name} Note: {note}")
             result = self.format_result(success, breach_filepath, "None", note)
             results.append(result)
 
         return results
 
     def format_result(self, success, breach_filename, payload, note):
-        success_symbol = "+" if success else "-"
         payload_str = payload if payload is not None else "None"
-        return f'{success_symbol}, {breach_filename}, {payload_str}, "{note}"'
+        result = {
+            'success': success,
+            'breach_filename': breach_filename,
+            'payload': payload_str,
+            'note': note
+        }
+        return result
 
     def set_variable(self, variable_name, new_value):
         if hasattr(self.breach_instance, variable_name):

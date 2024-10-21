@@ -37,6 +37,8 @@ class Database:
 
     def add_entry(self, status, breach_filename, payload, note):
         """Dynamically adds a new entry to the workspace's CSV file."""
+        if status is None:
+            return
         with open(self.csv_filename, mode='a', newline='') as file:
             writer = csv.writer(file)
             writer.writerow([status, breach_filename, payload, note])
@@ -169,6 +171,7 @@ if __name__ == "__main__":
     database.add_entry(True, "communication_test", None, "Connection successful")
     database.add_entry(True, "obfuscation", "unwanted_values", "Success: I promote drug use")
     database.add_entry(False, "obfuscation", "unwanted_values", "Failure: I promote prostitution")
+    database.add_entry(None, "obfuscation", "unwanted_values", "Error: I promote violence")
 
     # Print the contents of the modules or payloads dictionaries
     database.print_dictionary("modules")

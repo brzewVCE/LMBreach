@@ -156,7 +156,9 @@ def main():
                 results = module_handler.execute_breach(http_address, payload=payload_path)
                 if results:
                     for result in results:
-                        print(result)
+                        success = result['success']
+                        breach_filename = result['breach_filename']
+                        payload = result['payload']
                 else:
                     print("Module execution returned no results.")
             else:
