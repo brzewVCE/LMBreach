@@ -115,80 +115,98 @@ def handle_show_command(session_database, command_parts):
     else:
         print(f"Invalid dictionary type: {dict_type}. Choose from 'workspaces', 'modules', or 'payloads'.")
 
+def handle_run_module_command(session_database, module_handler, current_payload, http_address):
+    """Handles the execution of the loaded module."""
+    if module_handler:
+        try:
+            payload_path = None
+            if current_payload is not None:
+                payload_path = session_database.get_filename_by_index(current_payload, 'payload')
+            results = module_handler.execute_breach(http_address, payload=payload_path)
+            if results:
+                for result in results:
+                    success = result['success']
+                    breach_filename = result['breach_filename']
+                    payload = result['payload']
+                    note = result['note']
+                    session_database.add_entry(success, breach_filename, payload, note)
+        except KeyboardInterrupt:
+            output.warning("Module execution interrupted by user.")
+            return  # Return to the main loop
+    else:
+        print("No module is currently loaded.")
+
+def handle_set_command(command_parts, module_handler, http_address):
+    """Handles the 'set' command to update variables or settings."""
+    if len(command_parts) >= 3:
+        if command_parts[1] == 'http_address':
+            http_address = ' '.join(command_parts[2:])
+            print(f"HTTP address set to: {http_address}")
+            return http_address
+        elif command_parts[1] == 'module' and command_parts[2] == 'variable':
+            if len(command_parts) >= 5:
+                variable_name = command_parts[3]
+                new_value = ' '.join(command_parts[4:])
+                if module_handler:
+                    module_handler.set_variable(variable_name, new_value)
+                else:
+                    print("No module is currently loaded.")
+            else:
+                print("Invalid set command. Use: set module variable [variable_name] [new_value]")
+        else:
+            print(f"Unknown set command: {' '.join(command_parts[1:])}")
+    else:
+        print("Invalid set command. Use: set http_address [new_address] or set module variable [variable_name] [new_value]")
+    return http_address
+
 def main():
     # Initialize session
     session_database, current_workspace, current_module, current_payload, http_address, module_handler = initialize_session()
 
     while True:
-        # Get user input
-        user_input = input("").strip()
-        command_parts = user_input.lower().split()
+        try:
+            # Get user input
+            user_input = input("").strip()
+            command_parts = user_input.lower().split()
 
-        if len(command_parts) == 0:
-            continue
+            if len(command_parts) == 0:
+                continue
 
-        if command_parts[0] == 'quit':
-            print("Exiting program.")
-            break
+            if command_parts[0] == 'quit':
+                print("Exiting program.")
+                break
 
-        elif command_parts[0] == 'use':
-            session_database, current_workspace, current_module, current_payload, module_handler = handle_use_command(
-                session_database, command_parts, current_workspace, current_module, current_payload, module_handler
-            )
+            elif command_parts[0] == 'use':
+                session_database, current_workspace, current_module, current_payload, module_handler = handle_use_command(
+                    session_database, command_parts, current_workspace, current_module, current_payload, module_handler
+                )
 
-        elif command_parts[0] == 'show':
-            handle_show_command(session_database, command_parts)
+            elif command_parts[0] == 'show':
+                handle_show_command(session_database, command_parts)
 
-        elif user_input.lower() == 'print notes':
-            session_database.print_notes()
+            elif user_input.lower() == 'print notes':
+                session_database.print_notes()
 
-        elif user_input.lower() == 'session info':
-            show_session_info(session_database, current_workspace, module_handler, current_payload, http_address)
+            elif user_input.lower() == 'session info':
+                show_session_info(session_database, current_workspace, module_handler, current_payload, http_address)
 
-        elif user_input.lower() == 'module info':
-            show_module_info(module_handler)
+            elif user_input.lower() == 'module info':
+                show_module_info(module_handler)
 
-        elif user_input.lower() == 'run' or user_input.lower() == 'breach':
-            if module_handler:
-                payload_path = None
-                if current_payload is not None:
-                    payload_path = session_database.get_filename_by_index(current_payload, 'payload')
-                results = module_handler.execute_breach(http_address, payload=payload_path)
-                if results:
-                    for result in results:
-                        success = result['success']
-                        breach_filename = result['breach_filename']
-                        payload = result['payload']
-                        note = result['note']
-                        session_database.add_entry(success, breach_filename, payload, note)
+            elif user_input.lower() in ['run', 'breach']:
+                handle_run_module_command(session_database, module_handler, current_payload, http_address)
+
+            elif command_parts[0] == 'set':
+                http_address = handle_set_command(command_parts, module_handler, http_address)
+
+            elif user_input.lower() == 'help':
+                show_help()
+
             else:
-                print("No module is currently loaded.")
-
-        elif command_parts[0] == 'set':
-            if len(command_parts) >= 3:
-                if command_parts[1] == 'http_address':
-                    http_address = ' '.join(command_parts[2:])
-                    print(f"HTTP address set to: {http_address}")
-                elif command_parts[1] == 'module' and command_parts[2] == 'variable':
-                    if len(command_parts) >= 5:
-                        variable_name = command_parts[3]
-                        new_value = ' '.join(command_parts[4:])
-                        if module_handler:
-                            module_handler.set_variable(variable_name, new_value)
-                        else:
-                            print("No module is currently loaded.")
-                    else:
-                        print("Invalid set command. Use: set module variable [variable_name] [new_value]")
-                else:
-                    print(f"Unknown set command: {' '.join(command_parts[1:])}")
-            else:
-                print("Invalid set command. Use: set http_address [new_address]")
-
-        elif user_input.lower() == 'help':
-            show_help()
-
-        else:
-            print(f"Unknown command: {user_input}. Type 'help' for available commands")
+                print(f"Unknown command: {user_input}. Type 'help' for available commands")
+        except KeyboardInterrupt:
+            output.warning("Program interrupted by user. Returning to main menu.")
+            continue  # Go back to the main loop
 
 if __name__ == "__main__":
     main()
