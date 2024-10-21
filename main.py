@@ -93,7 +93,13 @@ def handle_use_command(session_database, command_parts, current_workspace, curre
             else:
                 output.warning(f"Module at index {identifier} not found.")
         else:
-            output.warning(f"Use of module by name [{identifier}] is not implemented in this version.")
+            module_path = session_database.get_filename_by_name(identifier, 'module')
+            if module_path:
+                current_module = identifier
+                module_handler = Handler(module_path)
+                output.success(f"Loaded module by name [{identifier}]: {module_path}")
+            else:
+                output.warning(f"Module with name [{identifier}] not found.")
 
     elif use_type == 'payload':
         if identifier.isdigit():
@@ -104,7 +110,12 @@ def handle_use_command(session_database, command_parts, current_workspace, curre
             else:
                 output.warning(f"Payload at index {identifier} not found.")
         else:
-            output.warning(f"Use of payload by name [{identifier}] is not implemented in this version.")
+            payload_path = session_database.get_filename_by_name(identifier, 'payload')
+            if payload_path:
+                current_payload = identifier
+                output.success(f"Loaded payload by name [{identifier}]: {payload_path}")
+            else:
+                output.warning(f"Payload with name [{identifier}] not found.")
 
     return session_database, current_workspace, current_module, current_payload, module_handler
 

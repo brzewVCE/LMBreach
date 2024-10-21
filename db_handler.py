@@ -109,6 +109,29 @@ class Database:
             output.warning(f"No file found at index {index} in {dict_type}.")
             return None
 
+    def get_filename_by_name(self, name, dict_type):
+        """Return the full file path from the modules or payloads dictionary based on the name."""
+        if dict_type.lower() == "module":
+            dictionary = self.modules_dict
+            directory = self.module_path
+        elif dict_type.lower() == "payload":
+            dictionary = self.payloads_dict
+            directory = self.payload_path
+        elif dict_type.lower() == "workspace":
+            dictionary = self.workspaces_dict
+            directory = self.workspace_path
+        else:
+            output.warning(f"Unknown dictionary type: {dict_type}")
+            return None
+
+        for index, filename in dictionary.items():
+            if filename == name:
+                # Join the directory path with the filename to get the full path
+                full_path = os.path.join(directory, filename)
+                return full_path
+
+        output.warning(f"No file found with name {name} in {dict_type}.")
+        return None
 
     def sort_notes(self):
         """Sorts the entries in the CSV file so that success=True entries are listed first."""
