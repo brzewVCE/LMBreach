@@ -72,6 +72,7 @@ class Database:
             return
 
         if dictionary:
+            output.info(f"{dictionary_name}:")
             for index, filename in dictionary.items():
                 output.index(index, filename)
         else:
@@ -116,14 +117,47 @@ class Database:
     def print_notes(self):
         output.colored(f"Notes for workspace: {self.workspace_name}", color='light_blue')
         self.sort_notes()
-        output.notes(self.csv_filename)
+        """Reads the CSV file and prints entries with colored categories."""
+        try:
+            with open(self.csv_filename, mode='r', newline='') as file:
+                reader = csv.DictReader(file)
+                for row in reader:
+                    status = row.get('success')
+                    breach_filename = row.get('breach_filename', 'N/A')
+                    payload = row.get('payload', 'N/A')
+                    note = row.get('note', 'N/A')
 
-    def list_workspaces(self):
+                    # Build the colored message
+                    colored_breach_filename = output.colored(f"File: ", "blue")+output.colored(f"{breach_filename}")
+                    if payload:
+                        colored_payload = output.colored(f"Payload: ", "light_green")+output.colored(f"{payload}")
+                    else:
+                        colored_payload = ""
+                    colored_note = output.colored(f"Note: ", "cyan")+output.colored(f"{note}")
+
+                    # Assemble full message
+                    message = f"{colored_breach_filename} {colored_payload} {colored_note}"
+
+                    # Output with success or warning icon
+                    if status == 'True':  # Successful case
+                        icon = output.colored("[+]", "green")
+                        print(f"{icon} {message}")
+                    elif status == 'False':  # Failed case
+                        icon = output.colored("[-]", "red")
+                        print(f"{icon} {message}")
+                    else:
+                        print(f"[?] Invalid status for entry: {message}")
+        except FileNotFoundError:
+            print(f"File {self.csv_filename} not found.")
+
+
+    def print_workspaces(self):
         """List all workspaces in the workspaces directory."""
         workspaces = os.listdir(self.workspace_path)
-        output.info("Available workspaces:")
-        for workspace in workspaces:
-            output.index("N/A", workspace)
+        output.info("Workspaces:")
+        # Print each workspace name with index
+        for index, workspace in enumerate(workspaces, start=1):
+            output.index(index, workspace)
 
 
 # Example usage
@@ -144,11 +178,13 @@ if __name__ == "__main__":
     payload_filename = database.get_filename_by_index(1, "payload")
     
     output.info(f"Module file at index 1: {module_filename}")
-    output.info(f"Payload file at index 2: {payload_filename}")
+    output.info(f"Payload file at index 1: {payload_filename}")
 
     # Print notes
     database.print_notes()
 
     # List all workspaces
-    database.list_workspaces()
+    database.print_workspaces()
+
+    database.print_notes()
 
