@@ -82,6 +82,9 @@ class Handler:
             output.warning("Module execution interrupted by user.")
             # Optionally, you can return the results obtained so far or handle as needed
             return results
+        except Exception as e:
+            output.warning(f"Error occurred: {str(e)}")
+            return None
 
         for result in results:
             success = result['success']
