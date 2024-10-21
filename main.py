@@ -4,7 +4,7 @@ import output_handler as output
 
 def initialize_session():
     """Initializes the session with a temporary workspace and sets the HTTP address."""
-    print("Initializing temporary database session...")
+    output.logo()
     default_http_address = "http://localhost:1234/v1/chat/completions"
     http_address = input(f"Enter API HTTP address [{default_http_address}]: ") or default_http_address
     session_database = Database("temp")
@@ -12,47 +12,52 @@ def initialize_session():
 
 def show_help():
     """Displays the available commands and their usage."""
-    print("\nCommands:")
-    print("1. use workspace [index] or use workspace [name] - Switch or create a workspace")
-    print("2. use module [index] or use module [name] - Load a module by index or name")
-    print("3. use payload [index] or use payload [name] - Load a payload by index or name")
-    print("4. show [workspaces/modules/payloads] - Show available workspaces, modules, or payloads")
-    print("5. print notes - Display notes related to the current workspace")
-    print("6. session info - Display information about the current session")
-    print("7. module info - Display information about the current loaded module")
-    print("8. run or breach - Execute the currently loaded module")
-    print("9. set module variable [variable_name] [new_value] - Set a variable in the loaded module")
-    print("10. set http_address [new_address] - Set a new HTTP address for the API")
-    print("11. help - Show this help message")
-    print("12. quit - Exit the program")
+    output.info("\nCommands:")
+    commands = [
+        ("use workspace [index/name]", "Switch or create a workspace"),
+        ("use module [index/name]", "Load a module by index or name"),
+        ("use payload [index/name]", "Load a payload by index or name"),
+        ("show [workspaces/modules/payloads]", "Show available workspaces, modules, or payloads"),
+        ("print notes", "Display notes related to the current workspace"),
+        ("session info", "Display information about the current session"),
+        ("module info", "Display information about the current loaded module"),
+        ("run or breach", "Execute the currently loaded module"),
+        ("set var [variable_name] [new_value]", "Set a variable in the loaded module"),
+        ("set http_address [new_address]", "Set a new HTTP address for the API"),
+        ("help", "Show this help message"),
+        ("quit", "Exit the program"),
+    ]
+    for cmd, desc in commands:
+        cmd_colored = output.colored(cmd, color='yellow')
+        print(f"    {cmd_colored} - {desc}")
 
 def show_session_info(session_database, current_workspace, module_handler, current_payload, http_address):
     """Displays the current session's loaded workspace, module, payload, and HTTP address."""
-    print(f"\nCurrent session info:")
-    print(f"Workspace: {current_workspace}")
+    output.info("\nCurrent session info:")
+    output.success(f"Workspace: {current_workspace}")
     if module_handler:
-        print(f"Module: {module_handler.module_path}")
+        output.info(f"Module: {module_handler.module_path}")
     else:
-        print("Module: None loaded")
+        output.warning("Module: None loaded")
     if current_payload:
         payload_path = session_database.get_filename_by_index(current_payload, 'payload')
-        print(f"Payload: {payload_path}")
+        output.info(f"Payload: {payload_path}")
     else:
-        print("Payload: None loaded")
-    print(f"HTTP Address: {http_address}")
+        output.warning("Payload: None loaded")
+    output.info(f"HTTP Address: {http_address}")
 
 def show_module_info(module_handler):
     """Displays detailed information about the currently loaded module."""
     if module_handler:
-        print(f"\nModule Information:")
+        output.info("\nModule Information:")
         module_handler.print_info()
     else:
-        print("No module is currently loaded.")
+        output.warning("No module is currently loaded.")
 
 def handle_use_command(session_database, command_parts, current_workspace, current_module, current_payload, module_handler):
     """Handles the 'use' command for workspace, module, and payload."""
     if len(command_parts) < 3:
-        print("Invalid command format. Use: use [type] [index/name]")
+        output.warning("Invalid command format. Use: use [type] [index/name]")
         return session_database, current_workspace, current_module, current_payload, module_handler
 
     use_type = command_parts[1]
@@ -67,16 +72,16 @@ def handle_use_command(session_database, command_parts, current_workspace, curre
                 current_module = None
                 current_payload = None
                 module_handler = None
-                print(f"Switched to workspace: {workspace_path}")
+                output.success(f"Switched to workspace: {workspace_path}")
             else:
-                print(f"Workspace at index {identifier} not found.")
+                output.warning(f"Workspace at index {identifier} not found.")
         else:
             session_database = Database(identifier)
             current_workspace = identifier
             current_module = None
             current_payload = None
             module_handler = None
-            print(f"Created or switched to workspace: {identifier}")
+            output.success(f"Created or switched to workspace: {identifier}")
 
     elif use_type == 'module':
         if identifier.isdigit():
@@ -84,36 +89,36 @@ def handle_use_command(session_database, command_parts, current_workspace, curre
             if module_path:
                 current_module = int(identifier)
                 module_handler = Handler(module_path)
-                print(f"Loaded module at index {identifier}: {module_path}")
+                output.success(f"Loaded module at index {identifier}: {module_path}")
             else:
-                print(f"Module at index {identifier} not found.")
+                output.warning(f"Module at index {identifier} not found.")
         else:
-            print(f"Use of module by name [{identifier}] is not implemented in this version.")
+            output.warning(f"Use of module by name [{identifier}] is not implemented in this version.")
 
     elif use_type == 'payload':
         if identifier.isdigit():
             payload_path = session_database.get_filename_by_index(int(identifier), 'payload')
             if payload_path:
                 current_payload = int(identifier)
-                print(f"Loaded payload at index {identifier}: {payload_path}")
+                output.success(f"Loaded payload at index {identifier}: {payload_path}")
             else:
-                print(f"Payload at index {identifier} not found.")
+                output.warning(f"Payload at index {identifier} not found.")
         else:
-            print(f"Use of payload by name [{identifier}] is not implemented in this version.")
+            output.warning(f"Use of payload by name [{identifier}] is not implemented in this version.")
 
     return session_database, current_workspace, current_module, current_payload, module_handler
 
 def handle_show_command(session_database, command_parts):
     """Handles the 'show' command to display available workspaces, modules, or payloads."""
     if len(command_parts) < 2:
-        print("Invalid command format. Use: show [workspaces/modules/payloads]")
+        output.warning("Invalid command format. Use: show [workspaces/modules/payloads]")
         return
 
     dict_type = command_parts[1]
     if dict_type in ['workspaces', 'modules', 'payloads']:
         session_database.print_dictionary(dict_type)
     else:
-        print(f"Invalid dictionary type: {dict_type}. Choose from 'workspaces', 'modules', or 'payloads'.")
+        output.warning(f"Invalid dictionary type: {dict_type}. Choose from 'workspaces', 'modules', or 'payloads'.")
 
 def handle_run_module_command(session_database, module_handler, current_payload, http_address):
     """Handles the execution of the loaded module."""
@@ -134,29 +139,26 @@ def handle_run_module_command(session_database, module_handler, current_payload,
             output.warning("Module execution interrupted by user.")
             return  # Return to the main loop
     else:
-        print("No module is currently loaded.")
+        output.warning("No module is currently loaded.")
 
 def handle_set_command(command_parts, module_handler, http_address):
     """Handles the 'set' command to update variables or settings."""
     if len(command_parts) >= 3:
         if command_parts[1] == 'http_address':
             http_address = ' '.join(command_parts[2:])
-            print(f"HTTP address set to: {http_address}")
+            output.success(f"HTTP address set to: {http_address}")
             return http_address
-        elif command_parts[1] == 'module' and command_parts[2] == 'variable':
-            if len(command_parts) >= 5:
-                variable_name = command_parts[3]
-                new_value = ' '.join(command_parts[4:])
-                if module_handler:
-                    module_handler.set_variable(variable_name, new_value)
-                else:
-                    print("No module is currently loaded.")
+        elif command_parts[1] == 'var':
+            variable_name = command_parts[2]
+            new_value = ' '.join(command_parts[3:])
+            if module_handler:
+                module_handler.set_variable(variable_name, new_value)
             else:
-                print("Invalid set command. Use: set module variable [variable_name] [new_value]")
+                output.warning("No module is currently loaded.")
         else:
-            print(f"Unknown set command: {' '.join(command_parts[1:])}")
+            output.warning(f"Unknown set command: {' '.join(command_parts[1:])}")
     else:
-        print("Invalid set command. Use: set http_address [new_address] or set module variable [variable_name] [new_value]")
+        output.warning("Invalid set command. Use: set http_address [new_address] or set var [variable_name] [new_value]")
     return http_address
 
 def main():
@@ -173,7 +175,7 @@ def main():
                 continue
 
             if command_parts[0] == 'quit':
-                print("Exiting program.")
+                output.warning("Exiting program.")
                 break
 
             elif command_parts[0] == 'use':
@@ -203,7 +205,7 @@ def main():
                 show_help()
 
             else:
-                print(f"Unknown command: {user_input}. Type 'help' for available commands")
+                output.warning(f"Unknown command: {user_input}. Type 'help' for available commands")
         except KeyboardInterrupt:
             output.warning("Program interrupted by user. Returning to main menu.")
             continue  # Go back to the main loop
