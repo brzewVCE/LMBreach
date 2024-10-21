@@ -63,7 +63,7 @@ class Handler:
                     result = {
                         'success': success,
                         'breach_filename': breach_filepath,
-                        'payload': line,
+                        'payload': payload_name,
                         'note': note
                     }
                     results.append(result)
@@ -74,7 +74,7 @@ class Handler:
                 result = {
                     'success': success,
                     'breach_filename': breach_filepath,
-                    'payload': "None",
+                    'payload': payload_name,
                     'note': note
                 }
                 results.append(result)
