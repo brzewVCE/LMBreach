@@ -159,8 +159,8 @@ def main():
                         success = result['success']
                         breach_filename = result['breach_filename']
                         payload = result['payload']
-                else:
-                    print("Module execution returned no results.")
+                        note = result['note']
+                        session_database.add_entry(success, breach_filename, payload, note)
             else:
                 print("No module is currently loaded.")
 

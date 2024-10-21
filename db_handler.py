@@ -39,7 +39,7 @@ class Database:
         """Dynamically adds a new entry to the workspace's CSV file."""
         if status is None:
             return
-        with open(self.csv_filename, mode='a', newline='') as file:
+        with open(self.csv_filename, mode='a', newline='', encoding='utf-8') as file:
             writer = csv.writer(file)
             writer.writerow([status, breach_filename, payload, note])
 
