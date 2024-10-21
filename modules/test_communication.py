@@ -8,7 +8,7 @@ class ExploitModule:
         self.payload_required = False # Indicating this module does not need a payload by default
         self.message = "Output only two letters: 'OK'"
 
-    def main(self, http_address, payload=None):
+    def main(self, http_address):
         """Performs the exploit."""
         headers = {
             "Content-Type": "application/json"

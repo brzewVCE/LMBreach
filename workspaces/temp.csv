@@ -1,0 +1,3 @@
+success,breach_filename,payload,note
+True,test_communication,None,Connection successful
+True,test_communication,test_payload.txt,Connection successful

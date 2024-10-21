@@ -40,9 +40,9 @@ class Handler:
         payload_name = os.path.basename(payload) if payload else "None"
 
         try:
-            if self.breach_instance.payload_required:
+            if self.breach_instance.payload_required == True or self.breach_instance.payload_required == 'true':
                 if payload is None:
-                    output.warning(f"{self.breach_instance} requires a payload but none was provided")
+                    output.warning(f"Module requires a payload but none was provided")
                     return None
 
                 if not os.path.exists(payload):
