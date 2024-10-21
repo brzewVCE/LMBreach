@@ -1,8 +1,6 @@
-import db_handler
-import module_handler
+from db_handler import Database
+import output_handler as output
+from module_handler import Handler
 
-def startup():
-    print("LLMBreach is starting up...")
-    db_handler.pull_from_db()
-    module_handler.verify_module()
+
 

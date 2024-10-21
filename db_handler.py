@@ -118,6 +118,12 @@ class Database:
         self.sort_notes()
         output.notes(self.csv_filename)
 
+    def list_workspaces(self):
+        """List all workspaces in the workspaces directory."""
+        workspaces = os.listdir(self.workspace_path)
+        output.info("Available workspaces:")
+        for workspace in workspaces:
+            output.index("N/A", workspace)
 
 
 # Example usage
@@ -142,4 +148,7 @@ if __name__ == "__main__":
 
     # Print notes
     database.print_notes()
+
+    # List all workspaces
+    database.list_workspaces()
 
