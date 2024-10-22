@@ -6,7 +6,7 @@ def initialize_session():
     """Initializes the session with a temporary workspace and sets the HTTP address."""
     output.logo()
     default_http_address = "http://localhost:1234/v1/chat/completions"
-    http_address = input(f"Enter API HTTP address or leave default [{default_http_address}]: ") or default_http_address
+    http_address = default_http_address
     session_database = Database("temp")
     return session_database, "temp", None, None, http_address, None
 
@@ -65,15 +65,14 @@ def handle_use_command(session_database, command_parts, current_workspace, curre
     if use_type == 'workspace':
         if identifier.isdigit():
             workspace_path = session_database.get_filename_by_index(int(identifier), 'workspace')
-            if workspace_path:
-                session_database = Database(workspace_path)
-                current_workspace = workspace_path
+            if workspace_path is not None:
+                workspace_name = session_database.get_name_by_filename(workspace_path, 'workspace')
+                session_database = Database(workspace_name)
+                current_workspace = workspace_name
                 current_module = None
                 current_payload = None
                 module_handler = None
                 output.success(f"Switched to workspace: {workspace_path}")
-            else:
-                output.warning(f"Workspace at index {identifier} not found.")
         else:
             session_database = Database(identifier)
             current_workspace = identifier
@@ -94,8 +93,6 @@ def handle_use_command(session_database, command_parts, current_workspace, curre
                 elif item_type == 'payload':
                     current_payload = item_name
                 output.success(f"Loaded {item_type} at index {identifier}: {item_path}")
-            else:
-                output.warning(f"{item_type.capitalize()} at index {identifier} not found.")
         else:
             item_path = session_database.get_filename_by_name(identifier, item_type)
             if item_path:
@@ -105,8 +102,7 @@ def handle_use_command(session_database, command_parts, current_workspace, curre
                 elif item_type == 'payload':
                     current_payload = identifier
                 output.success(f"Loaded {item_type} by name [{identifier}]: {item_path}")
-            else:
-                output.warning(f"{item_type.capitalize()} with name [{identifier}] not found.")
+
 
 
     return session_database, current_workspace, current_module, current_payload, module_handler

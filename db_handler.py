@@ -171,11 +171,15 @@ class Database:
             writer.writerows(sorted_rows)
 
     def print_notes(self):
-        output.colored(f"Notes for workspace: {self.workspace_name}", color='light_blue')
-        self.sort_notes()
-        """Reads the CSV file and prints entries with colored categories."""
+        
+        
         try:
+            self.sort_notes()
             with open(self.csv_filename, mode='r', newline='') as file:
+                if os.stat(self.csv_filename).st_size == 0:
+                    output.warning("No entries found.")
+                    return
+                output.info("Notes:")
                 reader = csv.DictReader(file)
                 for row in reader:
                     status = row.get('success')
