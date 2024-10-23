@@ -1,14 +1,14 @@
 import requests
 import json
 
-class ExploitModule:
+class BreachModule:
     def __init__(self):
         self.name = 'API Connection Test'
         self.description = 'A test module for API communication'
         self.payload_required = False # Indicating this module does not need a payload by default
         self.message = "Output only two letters: 'OK'"
 
-    def main(self, http_address, payload=None):
+    def main(self, http_address):
         """Performs the exploit."""
         headers = {
             "Content-Type": "application/json"
@@ -39,10 +39,10 @@ class ExploitModule:
 
 # Example of using the class:
 if __name__ == "__main__":
-    exploit = ExploitModule()
+    exploit = BreachModule()
     http_address = "http://localhost:1234/v1/chat/completions"  # Replace with the actual address
     success, result = exploit.main(http_address)
     if success:
-        print(f"Exploit executed successfully: {result}")
+        print(f"Breach executed successfully: {result}")
     else:
-        print(f"Exploit failed: {result}")
+        print(f"Breach failed: {result}")

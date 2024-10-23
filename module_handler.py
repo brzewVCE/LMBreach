@@ -101,11 +101,11 @@ class Handler:
             success = result['success']
             note = result['note']
             if success:
-                output.success(f"{self.breach_instance.name} Note: {note}")
+                output.success(f"{note}")
             elif success is None:
                 output.warning(f"{self.breach_instance.name} failed to execute. Note: {note}")
             else:
-                output.warning(f"{self.breach_instance.name} Note: {note}")
+                output.warning(f"{note}")
 
     def set_variable(self, variable_name, new_value):
         if hasattr(self.breach_instance, variable_name):
