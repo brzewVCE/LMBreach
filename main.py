@@ -126,7 +126,8 @@ def handle_run_module_command(session_database, module_handler, current_payload,
         try:
             payload_path = None
             if current_payload is not None:
-                payload_path = session_database.get_filename_by_index(current_payload, 'payload')
+                current_payload = current_payload + '.txt'
+                payload_path = session_database.get_filename_by_name(current_payload, 'payload')
             results = module_handler.execute_breach(http_address, payload=payload_path)
             if results:
                 for result in results:

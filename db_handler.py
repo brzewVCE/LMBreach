@@ -1,5 +1,5 @@
-import csv
 import os
+import csv
 import output_handler as output
 
 class Database:
@@ -22,40 +22,53 @@ class Database:
 
     def ensure_directories_exist(self):
         """Ensure that the directories for modules, payloads, and workspaces exist."""
-        os.makedirs(self.module_path, exist_ok=True)
-        os.makedirs(self.payload_path, exist_ok=True)
-        os.makedirs(self.workspace_path, exist_ok=True)
+        try:
+            os.makedirs(self.module_path, exist_ok=True)
+            os.makedirs(self.payload_path, exist_ok=True)
+            os.makedirs(self.workspace_path, exist_ok=True)
+        except OSError as e:
+            output.warning(f"Failed to create directories: {e}")
 
     def ensure_csv_exists(self):
         """Ensure that the workspace CSV file exists, and create it with headers if not."""
-        csv_filename = os.path.join(self.workspace_path, f"{self.workspace_name}.csv")
-        if not os.path.isfile(csv_filename):
-            with open(csv_filename, mode='w', newline='') as file:
-                writer = csv.writer(file)
-                writer.writerow(["success", "breach_filename", "payload", "note"])
-        return csv_filename
+        try:
+            csv_filename = os.path.join(self.workspace_path, f"{self.workspace_name}.csv")
+            if not os.path.isfile(csv_filename):
+                with open(csv_filename, mode='w', newline='') as file:
+                    writer = csv.writer(file)
+                    writer.writerow(["success", "breach_filename", "payload", "note"])
+            return csv_filename
+        except IOError as e:
+            output.warning(f"Failed to create CSV file: {e}")
+            return None
 
     def add_entry(self, status, breach_filename, payload, note):
         """Dynamically adds a new entry to the workspace's CSV file."""
         if status is None:
             return
-        with open(self.csv_filename, mode='a', newline='', encoding='utf-8') as file:
-            writer = csv.writer(file)
-            writer.writerow([status, breach_filename, payload, note])
+        try:
+            with open(self.csv_filename, mode='a', newline='', encoding='utf-8') as file:
+                writer = csv.writer(file)
+                writer.writerow([status, breach_filename, payload, note])
+        except IOError as e:
+            output.warning(f"Failed to write to CSV file: {e}")
 
     def load_files_to_dict(self, directory, target_dict):
         """Load files from the given directory into the target dictionary."""
         index = 1
-        if os.path.exists(directory):
-            files = os.listdir(directory)
-            output.info(f"Loading files from {directory}")
-            for file in files:
-                file_path = os.path.join(directory, file)
-                if os.path.isfile(file_path):
-                    target_dict[index] = file
-                    index += 1
-        else:
-            output.warning(f"Directory {directory} does not exist.")
+        try:
+            if os.path.exists(directory):
+                files = os.listdir(directory)
+                output.info(f"Loading files from {directory}")
+                for file in files:
+                    file_path = os.path.join(directory, file)
+                    if os.path.isfile(file_path):
+                        target_dict[index] = file
+                        index += 1
+            else:
+                output.warning(f"Directory {directory} does not exist.")
+        except Exception as e:
+            output.warning(f"Failed to load files from directory {directory}: {e}")
 
     def load_dirs(self):
         """Load both modules and payloads into their respective dictionaries."""
@@ -87,28 +100,33 @@ class Database:
 
     def get_filename_by_index(self, index, dict_type):
         """Return the full file path from the modules or payloads dictionary based on the index."""
-        if dict_type.lower() == "module":
-            dictionary = self.modules_dict
-            directory = self.module_path
-        elif dict_type.lower() == "payload":
-            dictionary = self.payloads_dict
-            directory = self.payload_path
-        elif dict_type.lower() == "workspace":
-            dictionary = self.workspaces_dict
-            directory = self.workspace_path
-        else:
-            output.warning(f"Unknown dictionary type: {dict_type}")
+        try:
+            if dict_type.lower() == "module":
+                dictionary = self.modules_dict
+                directory = self.module_path
+            elif dict_type.lower() == "payload":
+                dictionary = self.payloads_dict
+                directory = self.payload_path
+            elif dict_type.lower() == "workspace":
+                dictionary = self.workspaces_dict
+                directory = self.workspace_path
+            else:
+                output.warning(f"Unknown dictionary type: {dict_type}")
+                return None
+
+            filename = dictionary.get(index)
+            if filename:
+                # Return the full path, keeping the filename extension intact
+                full_path = os.path.join(directory, filename)
+                return full_path
+            else:
+                output.warning(f"No file found at index {index} in {dict_type}.")
+                return None
+        except Exception as e:
+            output.warning(f"Error retrieving file by index: {e}")
             return None
 
-        filename = dictionary.get(index)
-        if filename:
-            # Join the directory path with the filename to get the full path
-            full_path = os.path.join(directory, filename)
-            return full_path
-        else:
-            output.warning(f"No file found at index {index} in {dict_type}.")
-            return None
-
+        
     def get_filename_by_name(self, name, dict_type):
         """Return the full file path from the modules or payloads dictionary based on the name."""
         if dict_type.lower() == "module":
@@ -126,35 +144,41 @@ class Database:
 
         for index, filename in dictionary.items():
             if filename == name:
-                # Join the directory path with the filename to get the full path
+                # Return the full path with the filename extension
                 full_path = os.path.join(directory, filename)
                 return full_path
 
         output.warning(f"No file found with name {name} in {dict_type}.")
         return None
 
+
     def get_name_by_filename(self, filename, dict_type):
-        """Return the name of the file without extension from the dictionary based on the full path."""
-        if dict_type.lower() == "module":
-            dictionary = self.modules_dict
-            directory = self.module_path
-        elif dict_type.lower() == "payload":
-            dictionary = self.payloads_dict
-            directory = self.payload_path
-        elif dict_type.lower() == "workspace":
-            dictionary = self.workspaces_dict
-            directory = self.workspace_path
-        else:
-            output.warning(f"Unknown dictionary type: {dict_type}")
+        """Return the name of the file from the modules or payloads dictionary based on the full path."""
+        try:
+            if dict_type.lower() == "module":
+                dictionary = self.modules_dict
+                directory = self.module_path
+            elif dict_type.lower() == "payload":
+                dictionary = self.payloads_dict
+                directory = self.payload_path
+            elif dict_type.lower() == "workspace":
+                dictionary = self.workspaces_dict
+                directory = self.workspace_path
+            else:
+                output.warning(f"Unknown dictionary type: {dict_type}")
+                return None
+
+            for index, file in dictionary.items():
+                full_path = os.path.join(directory, file)
+                if full_path == filename:
+                    return os.path.splitext(file)[0]  # Return filename without extension
+
+            output.warning(f"No file found with path {filename} in {dict_type}.")
             return None
-
-        for index, file in dictionary.items():
-            full_path = os.path.join(directory, file)
-            if full_path == filename:
-                return os.path.splitext(file)[0]  # Return filename without extension
-
-        output.warning(f"No file found with path {filename} in {dict_type}.")
-        return None
+        except Exception as e:
+            output.warning(f"Error retrieving name by filename: {e}")
+            return None
+        
 
     def sort_notes(self):
         """Sorts the entries in the CSV file so that success=True entries are listed first."""
