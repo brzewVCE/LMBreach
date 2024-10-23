@@ -5,10 +5,10 @@ import output_handler as output
 class Database:
     def __init__(self, workspace_name):
         self.workspace_name = workspace_name
-        self.module_path = ".\modules"
-        self.payload_path = ".\payloads"
-        self.workspace_path = f".\workspaces"
-        
+        self.module_path = os.path.abspath("./modules")
+        self.payload_path = os.path.abspath("./payloads")
+        self.workspace_path = os.path.abspath("./workspaces")
+
         self.modules_dict = {}
         self.payloads_dict = {}
         self.workspaces_dict = {}
@@ -28,7 +28,7 @@ class Database:
 
     def ensure_csv_exists(self):
         """Ensure that the workspace CSV file exists, and create it with headers if not."""
-        csv_filename = f"{self.workspace_path}\{self.workspace_name}.csv"
+        csv_filename = os.path.join(self.workspace_path, f"{self.workspace_name}.csv")
         if not os.path.isfile(csv_filename):
             with open(csv_filename, mode='w', newline='') as file:
                 writer = csv.writer(file)
@@ -134,7 +134,7 @@ class Database:
         return None
 
     def get_name_by_filename(self, filename, dict_type):
-        """Return the name of the file from the modules or payloads dictionary based on the full path."""
+        """Return the name of the file without extension from the dictionary based on the full path."""
         if dict_type.lower() == "module":
             dictionary = self.modules_dict
             directory = self.module_path
@@ -151,7 +151,7 @@ class Database:
         for index, file in dictionary.items():
             full_path = os.path.join(directory, file)
             if full_path == filename:
-                return file
+                return os.path.splitext(file)[0]  # Return filename without extension
 
         output.warning(f"No file found with path {filename} in {dict_type}.")
         return None

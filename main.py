@@ -7,8 +7,9 @@ def initialize_session():
     output.logo()
     default_http_address = "http://localhost:1234/v1/chat/completions"
     http_address = default_http_address
-    session_database = Database("temp")
+    session_database = Database("temp")  # Now it avoids creating "temp.csv.csv"
     return session_database, "temp", None, None, http_address, None
+
 
 def show_help():
     """Displays the available commands and their usage."""
