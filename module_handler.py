@@ -71,6 +71,8 @@ class Handler:
                     kwargs = {'http_address': http_address, 'payload': line}
                     output.info(f"Running {self.breach_instance.name} with payload line: {line}")
                     success, note = method(**kwargs)
+                    # Get rid of newlines in the note
+                    note = note.replace('\n', ' ').strip()
                     result = {
                         'success': success,
                         'breach_filename': breach_filepath,

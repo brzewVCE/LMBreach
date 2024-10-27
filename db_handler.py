@@ -48,7 +48,7 @@ class Database:
             return
         try:
             with open(self.csv_filename, mode='a', newline='', encoding='utf-8') as file:
-                writer = csv.writer(file)
+                writer = csv.writer(file, quoting=csv.QUOTE_ALL)
                 writer.writerow([status, breach_filename, payload, note])
         except IOError as e:
             output.warning(f"Failed to write to CSV file: {e}")
