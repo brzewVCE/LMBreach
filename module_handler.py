@@ -88,7 +88,7 @@ class Handler:
                 result = {
                     'success': success,
                     'breach_filename': breach_filepath,
-                    'payload': "None",
+                    'payload': None,
                     'note': note
                 }
                 results.append(result)
