@@ -1,239 +1,119 @@
 # LMBreach
 
-LMBreach is a command-line tool designed for security researchers and developers to test the robustness and security of language models (LMs) by executing custom modules and payloads. It provides an interactive shell to manage workspaces, modules, and payloads, and to execute breach modules against language models.
 
-## Table of Contents
+## Introduction
 
-- [Features](#features)
-- [Installation](#installation)
-  - [Prerequisites](#prerequisites)
-  - [Steps](#steps)
-- [Usage](#usage)
-  - [Commands](#commands)
-  - [Example Session](#example-session)
-- [Directory Structure](#directory-structure)
-- [Contributing](#contributing)
-- [License](#license)
-- [Disclaimer](#disclaimer)
+**LMBreach** is an interactive command-line tool designed to test and evaluate the security and robustness of Language Models (LMs). It allows users to load custom modules, payloads, and jailbreaks to simulate various scenarios and analyze the responses of language models.
 
 ## Features
 
-- **Workspace Management**: Organize your breach tests using multiple workspaces.
-- **Module and Payload Loading**: Load and execute custom breach modules and payloads.
-- **Interactive CLI**: User-friendly command-line interface with helpful commands and color-coded outputs.
-- **Session Logging**: Logs breach attempts and results for analysis.
-- **Customizable Settings**: Configure variables and HTTP addresses for modules.
+- **Workspace Management**: Create and switch between different workspaces to organize your testing sessions.
+- **Module Handling**: Load and execute custom modules tailored for specific testing scenarios.
+- **Payload and Jailbreak Integration**: Incorporate diverse payloads and jailbreak scripts to challenge language models.
+- **Session Management**: Maintain detailed session information and view comprehensive module data.
+- **Customizable API Endpoint**: Configure the HTTP address to connect to your language model API.
+- **Interactive CLI**: Navigate and utilize the tool efficiently with an intuitive command-line interface.
 
 ## Installation
 
-### Prerequisites
+```bash
+# Clone the repository
+git clone https://github.com/yourusername/LMBreach.git
 
-- **Python 3.7** or higher
-- **Git** (optional, for cloning the repository)
+# Navigate into the directory
+cd LMBreach
 
-### Steps
-
-1. **Clone the Repository**
-
-   ```bash
-   git clone https://github.com/yourusername/LMBreach.git
-   ```
-
-   *Replace `yourusername` with the actual GitHub username. Alternatively, you can download the ZIP file from GitHub and extract it.*
-
-2. **Navigate to the Project Directory**
-
-   ```bash
-   cd LMBreach
-   ```
-
-3. **Install Required Python Packages**
-
-   LMBreach uses standard Python libraries. If any external dependencies are added in the future, install them using:
-
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-   *Currently, there is no `requirements.txt` file as there are no external dependencies.*
+# Install dependencies
+pip install -r requirements.txt
+```
 
 ## Usage
 
-Run the main script to start the interactive shell:
+Run the main script to start the interactive session:
 
 ```bash
-python main.py
+python lmbreach.py
 ```
 
-### Commands
+Upon starting, you'll see the LMBreach logo and a prompt ready for commands.
 
-Use the following commands within the LMBreach interactive shell:
+### Available Commands
 
-- **`use workspace [index/name]`**: Switch to or create a workspace.
-- **`use module [index/name]`**: Load a breach module by index or name.
-- **`use payload [index/name]`**: Load a payload by index or name.
-- **`show [workspaces/modules/payloads]`**: Display available workspaces, modules, or payloads.
-- **`print notes`**: Display notes related to the current workspace.
-- **`session info`**: Show information about the current session.
-- **`module info`**: Show detailed information about the currently loaded module.
-- **`run` or **`breach`**: Execute the currently loaded module.
-- **`set var [variable_name] [new_value]`**: Set a variable in the loaded module.
-- **`set http_address [new_address]`**: Set a new HTTP address for the API.
-- **`help`**: Display the help message with available commands.
-- **`quit`**: Exit the program.
+- **use workspace [index/name]**: Switch or create a workspace.
+- **use module [index/name]**: Load a module by index or name.
+- **use payload [index/name]**: Load a payload by index or name.
+- **use jailbreak [index/name]**: Load a jailbreak by index or name.
+- **show [workspaces/modules/payloads/jailbreaks]**: Display available items.
+- **print notes**: Display notes related to the current workspace.
+- **session info**: Show current session information.
+- **module info**: Display detailed information about the loaded module.
+- **run** or **breach**: Execute the currently loaded module.
+- **set var [variable_name] [new_value]**: Set a variable in the loaded module.
+- **set http_address [new_address]**: Update the HTTP address for the API.
+- **help**: Show the help message with available commands.
+- **quit**: Exit the program.
 
 ### Example Session
 
-1. **Start LMBreach**
+```bash
+# Start LMBreach
+python lmbreach.py
 
-   ```bash
-   python main.py
-   ```
+# Create or switch to a workspace
+use workspace my_workspace
 
-2. **Display Help**
+# Load a module by index or name
+use module 1
 
-   ```plaintext
-   > help
-   ```
+# Load a payload
+use payload default_payload
 
-3. **Create or Switch to a Workspace**
+# Load a jailbreak script
+use jailbreak default_jailbreak
 
-   ```plaintext
-   > use workspace my_workspace
-   ```
+# View session information
+session info
 
-   *This will create a new workspace named `my_workspace` or switch to it if it already exists.*
+# Run the loaded module
+run
+```
 
-4. **Show Available Modules**
+### Setting the HTTP Address
 
-   ```plaintext
-   my_workspace > None > None: show modules
-   ```
+By default, LMBreach connects to `http://localhost:1234/v1/chat/completions`. To change this, use:
 
-5. **Load a Module**
+```bash
+set http_address http://your-custom-address:port/path
+```
 
-   ```plaintext
-   my_workspace > None > None: use module 1
-   ```
+## Modules, Payloads, and Jailbreaks
 
-   *You can also use the module name instead of the index:*
+- **Modules**: Scripts that define specific testing procedures or interactions with the language model.
+- **Payloads**: Data or prompts sent to the language model during testing.
+- **Jailbreaks**: Scripts designed to test the language model's ability to handle unexpected or adversarial inputs.
 
-   ```plaintext
-   my_workspace > None > None: use module my_module
-   ```
+## Session Management
 
-6. **Show Available Payloads**
+LMBreach maintains session information, allowing you to:
 
-   ```plaintext
-   my_workspace > my_module > None: show payloads
-   ```
-
-7. **Load a Payload**
-
-   ```plaintext
-   my_workspace > my_module > None: use payload 1
-   ```
-
-   *Or by name:*
-
-   ```plaintext
-   my_workspace > my_module > None: use payload my_payload
-   ```
-
-8. **Set Module Variables**
-
-   ```plaintext
-   my_workspace > my_module > my_payload: set var timeout 30
-   ```
-
-9. **Set HTTP Address**
-
-   ```plaintext
-   my_workspace > my_module > my_payload: set http_address http://localhost:8000/v1/chat/completions
-   ```
-
-10. **Execute the Module**
-
-    ```plaintext
-    my_workspace > my_module > my_payload: run
-    ```
-
-11. **View Session Information**
-
-    ```plaintext
-    my_workspace > my_module > my_payload: session info
-    ```
-
-12. **Print Notes**
-
-    ```plaintext
-    my_workspace > my_module > my_payload: print notes
-    ```
-
-13. **Exit LMBreach**
-
-    ```plaintext
-    my_workspace > my_module > my_payload: quit
-    ```
-
-## Directory Structure
-
-The project directories are organized as follows:
-
-- **`modules/`**: Contains breach modules. Each module is a script or file that defines a breach test.
-- **`payloads/`**: Contains payloads used by modules during execution.
-- **`workspaces/`**: Contains workspaces and their respective logs in CSV format. Each workspace has its own CSV file for logging breach attempts and results.
-- **`main.py`**: The main script to run LMBreach.
-- **`db_handler.py`**: Handles database operations for workspaces, modules, and payloads.
-- **`module_handler.py`**: Manages loading and execution of breach modules.
-- **`output_handler.py`**: Provides colored output and logging functionalities.
+- Switch between workspaces without losing progress.
+- Keep track of loaded modules, payloads, and jailbreaks.
+- View notes and logs associated with each session.
 
 ## Contributing
 
 Contributions are welcome! Please follow these steps:
 
-1. **Fork the Repository**
-
-   Click the "Fork" button at the top right corner of the repository page.
-
-2. **Clone Your Fork**
-
-   ```bash
-   git clone https://github.com/yourusername/LMBreach.git
-   ```
-
-3. **Create a Feature Branch**
-
-   ```bash
-   git checkout -b feature/your-feature-name
-   ```
-
-4. **Commit Your Changes**
-
-   ```bash
-   git commit -am "Add new feature"
-   ```
-
-5. **Push to Your Fork**
-
-   ```bash
-   git push origin feature/your-feature-name
-   ```
-
-6. **Create a Pull Request**
-
-   Go to the original repository and click on "Pull Requests" to submit your changes for review.
-
-## License
-
-This project is licensed under the **MIT License**. See the [LICENSE](LICENSE) file for details.
+1. Fork the repository.
+2. Create a new branch: `git checkout -b feature/your-feature-name`.
+3. Commit your changes: `git commit -m 'Add some feature'`.
+4. Push to the branch: `git push origin feature/your-feature-name`.
+5. Open a pull request.
 
 ## Disclaimer
 
-LMBreach is intended for educational and ethical testing purposes only. Unauthorized or malicious use against systems without explicit permission is illegal and unethical. The developers are not responsible for any misuse of this tool.
-
-**Use responsibly and always ensure you have proper authorization before conducting any tests.**
+LMBreach is intended for ethical testing and evaluation of language models. Please ensure you comply with all applicable laws and regulations when using this tool.
 
 ---
 
-*Note: LMBreach is currently under development. Features and functionalities are subject to change. For any issues or suggestions, please open an [issue](https://github.com/yourusername/LMBreach/issues) on GitHub.*
+Feel free to customize this README with additional details, images, or badges specific to your project. Make sure to replace placeholders like `yourusername` and add any necessary information about dependencies or setup procedures.
