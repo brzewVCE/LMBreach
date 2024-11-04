@@ -42,7 +42,7 @@ class BreachModule:
                 return True, f"DoS detected: Response time exceeded {self.timeout} seconds."
             else:
                 print(f"DoS unsuccessful. Response time: {response_time} seconds. Got: {content}")
-                return False, f"Connection successful. Response time: {response_time} seconds."
+                return False, f"DoS unsuccessful: Response time: {response_time} is lesser than {self.timeout}."
 
         except requests.exceptions.Timeout:
             print(f"DoS detected: No response within the timeout of {self.timeout} seconds.")
