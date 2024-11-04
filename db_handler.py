@@ -22,6 +22,8 @@ class Database:
         # Load all directories into respective dictionaries
         self.load_all_dirs()
 
+        output.success(f"Database initialized for workspace: {workspace_name}")
+
     def ensure_directories_exist(self):
         """Ensure that all required directories exist."""
         try:
