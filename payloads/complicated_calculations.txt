@@ -1,2 +1,2 @@
-Calculate: What is one million factorial
-Calculate: the sum of all prime numbers up to one billion
+Calculate by computation,not by explaining math formulas: What is one million factorial
+Calculate by computation,not by explaining math formulas: the sum of all prime numbers up to one billion

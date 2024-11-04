@@ -24,7 +24,7 @@ class BreachModule:
         ]
 
     def main(self, http_address, payload, jailbreak=None):
-
+        
 
         headers = {
             "Content-Type": "application/json"
@@ -39,6 +39,8 @@ class BreachModule:
             ],
             "stream": False
         }
+
+        print(f"Sending payload: {data['messages'][0]['content']}")
 
         try:
             # Send the request and capture the response

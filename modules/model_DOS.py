@@ -9,7 +9,7 @@ class BreachModule:
         self.payload_required = True  # Indicates that this module requires a payload
         self.timeout = 20  # Time in seconds to wait for a response before flagging DoS
 
-    def main(self, http_address, payload, jailbreak=None):
+    def main(self, http_address, payload, jailbreak=""):
         headers = {
             "Content-Type": "application/json"
         }
@@ -33,13 +33,15 @@ class BreachModule:
 
             # Calculate response time
             response_time = time.time() - start_time
+            response_data = response.json()
+            content = response_data['choices'][0]['message']['content'].strip()
 
             # Check if response time exceeded the timeout
             if response_time > self.timeout:
-                print(f"DoS successful: Response time {response_time} seconds exceeded the timeout of {self.timeout} seconds.")
+                print(f"DoS successful: Time {response_time} seconds exceeded the timeout of {self.timeout} seconds.")
                 return True, f"DoS detected: Response time exceeded {self.timeout} seconds."
             else:
-                print(f"DoS unsuccessful. Response time: {response_time} seconds.")
+                print(f"DoS unsuccessful. Response time: {response_time} seconds. Got: {content}")
                 return False, f"Connection successful. Response time: {response_time} seconds."
 
         except requests.exceptions.Timeout:
