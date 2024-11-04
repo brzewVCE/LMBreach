@@ -106,13 +106,14 @@ def handle_use_command(session_database, command_parts, current_workspace, curre
         else:
             item_path = session_database.get_filename_by_name(identifier, item_type)
             if item_path:
-                if item_type == 'module':
-                    current_module = identifier
+                item_name = session_database.get_name_by_filename(item_path, item_type)
+                if use_type == 'module':
+                    current_module = item_name
                     module_handler = Handler(item_path)
-                elif item_type == 'payload':
-                    current_payload = identifier
-                elif item_type == 'jailbreak':
-                    current_jailbreak = identifier
+                elif use_type == 'payload':
+                    current_payload = item_name
+                elif use_type == 'jailbreak':
+                    current_jailbreak = item_name
                 output.success(f"Loaded {item_type} by name [{identifier}]: {item_path}")
 
     return session_database, current_workspace, current_module, current_jailbreak, current_payload, module_handler
