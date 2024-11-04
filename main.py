@@ -70,9 +70,9 @@ def handle_use_command(session_database, command_parts, current_workspace, curre
 
     if use_type == 'workspace':
         if identifier.isdigit():
-            workspace_path = session_database.get_filename_by_index(int(identifier), 'workspace')
+            workspace_path = session_database.get_filename_by_index(int(identifier), 'workspaces')
             if workspace_path is not None:
-                workspace_name = session_database.get_name_by_filename(workspace_path, 'workspace')
+                workspace_name = session_database.get_name_by_filename(workspace_path, 'workspaces')
                 session_database = Database(workspace_name)
                 current_workspace = workspace_name
                 current_module = None
@@ -137,10 +137,10 @@ def handle_run_module_command(session_database, module_handler, current_jailbrea
             jailbreak_path = None
             if current_payload:
                 current_payload = current_payload + '.txt'
-                payload_path = session_database.get_filename_by_name(current_payload, 'payload')
+                payload_path = session_database.get_filename_by_name(current_payload, 'payloads')
             if current_jailbreak:
                 current_jailbreak = current_jailbreak + '.txt'
-                jailbreak_path = session_database.get_filename_by_name(current_jailbreak, 'jailbreak')
+                jailbreak_path = session_database.get_filename_by_name(current_jailbreak, 'jailbreaks')
             results = module_handler.execute_breach(http_address, payload=payload_path, jailbreak=jailbreak_path)
             if results:
                 for result in results:

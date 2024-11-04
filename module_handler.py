@@ -40,26 +40,44 @@ class Handler:
         for attr, value in self.breach_instance.__dict__.items():
             text = output.colored(f"  {attr} = {value}", color='light_blue')
             print(text)
+    
+    def load_jailbreak(self, txt_path):
+        """Loads the content of a .txt file as a single string."""
+        try:
+            if not os.path.exists(txt_path):
+                raise FileNotFoundError(f"Jailbreak file {txt_path} not found.")
+            
+            with open(txt_path, 'r', encoding='utf-8') as file:
+                jailbreak_content = file.read().strip()
+            
+            output.success(f"Jailbreak loaded from {txt_path}. Content length: {len(jailbreak_content)} characters.")
+            return jailbreak_content
+        except Exception as e:
+            output.warning(f"Error loading jailbreak content: {e}")
+            return None
 
-    def execute_breach(self, http_address, payload=None):
+    def execute_breach(self, http_address, payload=None, jailbreak=None):
         try:
             method = getattr(self.breach_instance, "main")
             results = []
             breach_filepath = self.breach_instance.__module__
-            # payload name is striped from the path and extension
-            payload_name = os.path.splitext(os.path.basename(payload))[0] if payload else "None"
+            payload_name = os.path.splitext(os.path.basename(payload))[0] if payload else None
+            jailbreak_name = os.path.basename(jailbreak) if jailbreak else None
+            jailbreak_content = None
 
-            # Check if the module requires a payload
+            # Load jailbreak content if provided
+            if jailbreak:
+                jailbreak_content = self.load_jailbreak(jailbreak)
+
             if hasattr(self.breach_instance, 'payload_required') and self.breach_instance.payload_required:
                 if payload is None:
-                    output.warning(f"Module requires a payload but none was provided.")
+                    output.warning("Module requires a payload but none was provided.")
                     return None
 
                 if not os.path.exists(payload):
                     output.warning(f"Payload file {payload} does not exist.")
                     return None
 
-                # Proceed with payload execution
                 with open(payload, 'r', encoding='utf-8') as file:
                     payload_lines = file.readlines()
 
@@ -69,29 +87,37 @@ class Handler:
                         continue
 
                     kwargs = {'http_address': http_address, 'payload': line}
-                    output.info(f"Running {self.breach_instance.name} with payload line: {line}")
+                    if jailbreak_content:
+                        kwargs['jailbreak'] = jailbreak_content
+                        output.info(f"Running {self.breach_instance.name} with {line} with jailbreak: {jailbreak_name}")
+
                     success, note = method(**kwargs)
-                    # Get rid of newlines in the note
                     note = note.replace('\n', ' ').strip()
                     result = {
                         'success': success,
                         'breach_filename': breach_filepath,
+                        'jailbreak': jailbreak_name,
                         'payload': payload_name,
                         'note': note
                     }
                     results.append(result)
             else:
-                # No payload required, run the module without it
                 kwargs = {'http_address': http_address}
-                output.info(f"Running {self.breach_instance.name} without payload")
+                if jailbreak_content:
+                    kwargs['jailbreak'] = jailbreak_content
+                    output.info(f"Running {self.breach_instance.name} without payload but with jailbreak: {jailbreak_name}")
+
                 success, note = method(**kwargs)
+                note = f"{jailbreak_name}" if jailbreak_content else note.replace('\n', ' ').strip()
                 result = {
                     'success': success,
                     'breach_filename': breach_filepath,
+                    'jailbreak': jailbreak_name,
                     'payload': None,
                     'note': note
                 }
                 results.append(result)
+
             self.print_results(results)
             return results
         except Exception as e:
@@ -117,15 +143,11 @@ class Handler:
             output.warning(f"Variable '{variable_name}' not found in {self.breach_instance.name}")
 
 if __name__ == "__main__":
-    handler = Handler(module_path='./modules/test_communication.py')
+    handler = Handler(module_path='./modules/check_dos.py')
     handler.print_info()
-    
-    # Modify variable 'message' in the BreachModule instance
-    handler.set_variable('message', 'Respond with "Test"')
 
-    handler.print_info()
     
     # Execute with payload if needed
-    breach_result = handler.execute_breach(http_address='http://localhost:1234/v1/chat/completions', payload='./payloads/test_payload.txt')
+    breach_result = handler.execute_breach(http_address='http://localhost:1234/v1/chat/completions', payload='./payloads/complicated_calculations.txt', jailbreak='./jailbreaks/test_jailbreak.txt')
     for result in breach_result:
         print(result)

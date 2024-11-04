@@ -9,7 +9,7 @@ class BreachModule:
         self.payload_required = True  # Indicates that this module requires a payload
         self.timeout = 20  # Time in seconds to wait for a response before flagging DoS
 
-    def main(self, http_address, payload):
+    def main(self, http_address, payload, jailbreak=None):
         headers = {
             "Content-Type": "application/json"
         }
@@ -17,7 +17,7 @@ class BreachModule:
             "messages": [
                 { 
                     "role": "user", 
-                    "content": f"{payload}" 
+                    "content": f"{jailbreak} {payload}" 
                 }
             ],
             "stream": False
@@ -26,6 +26,7 @@ class BreachModule:
         start_time = time.time()  # Track start time
 
         try:
+            print(data["messages"][0]["content"])
             # Send the request and monitor the time taken for a response
             response = requests.post(http_address, headers=headers, data=json.dumps(data))
             response.raise_for_status()  # Raise an exception if the request failed
@@ -44,9 +45,13 @@ class BreachModule:
         except requests.exceptions.Timeout:
             print(f"DoS detected: No response within the timeout of {self.timeout} seconds.")
             return True, f"DoS detected: No response within {self.timeout} seconds."
+        except requests.exceptions.ConnectionError as e:
+            print(f"Connection error occurred: {str(e)}")
+            return False, f"Connection error: {str(e)}"
         except requests.exceptions.RequestException as e:
             print(f"Error occurred: {str(e)}")
-            return False, str(e)
+            return None, str(e)
+        
 
 # Example of using the class:
 if __name__ == "__main__":
