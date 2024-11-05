@@ -1,9 +1,10 @@
 # LMBreach
 
-
 ## Introduction
 
 **LMBreach** is an interactive command-line tool designed to test and evaluate the security and robustness of Language Models (LMs). It allows users to load custom modules, payloads, and jailbreaks to simulate various scenarios and analyze the responses of language models.
+
+**Note:** Currently, LMBreach only works with **[LM Studio](https://lmstudio.ai/)** as the LLM host.
 
 ## Features
 
@@ -11,7 +12,7 @@
 - **Module Handling**: Load and execute custom modules tailored for specific testing scenarios.
 - **Payload and Jailbreak Integration**: Incorporate diverse payloads and jailbreak scripts to challenge language models.
 - **Session Management**: Maintain detailed session information and view comprehensive module data.
-- **Customizable API Endpoint**: Configure the HTTP address to connect to your language model API.
+- **Customizable API Endpoint**: Configure the HTTP address to connect to your language model API hosted by LM Studio.
 - **Interactive CLI**: Navigate and utilize the tool efficiently with an intuitive command-line interface.
 
 ## Installation
@@ -28,6 +29,8 @@ pip install -r requirements.txt
 ```
 
 ## Usage
+
+**Prerequisite:** Ensure you have **LM Studio** installed and running as your LLM host.
 
 Run the main script to start the interactive session:
 
@@ -49,7 +52,7 @@ Upon starting, you'll see the LMBreach logo and a prompt ready for commands.
 - **module info**: Display detailed information about the loaded module.
 - **run** or **breach**: Execute the currently loaded module.
 - **set var [variable_name] [new_value]**: Set a variable in the loaded module.
-- **set http_address [new_address]**: Update the HTTP address for the API.
+- **set http_address [new_address]**: Update the HTTP address for the LM Studio API.
 - **help**: Show the help message with available commands.
 - **quit**: Exit the program.
 
@@ -80,7 +83,7 @@ run
 
 ### Setting the HTTP Address
 
-By default, LMBreach connects to `http://localhost:1234/v1/chat/completions`. To change this, use:
+By default, LMBreach connects to LM Studio at `http://localhost:1234/v1/chat/completions`. If your LM Studio instance is running on a different address or port, you can change it using:
 
 ```bash
 set http_address http://your-custom-address:port/path
@@ -115,5 +118,3 @@ Contributions are welcome! Please follow these steps:
 LMBreach is intended for ethical testing and evaluation of language models. Please ensure you comply with all applicable laws and regulations when using this tool.
 
 ---
-
-Feel free to customize this README with additional details, images, or badges specific to your project. Make sure to replace placeholders like `yourusername` and add any necessary information about dependencies or setup procedures.
