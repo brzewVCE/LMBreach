@@ -1,2 +1,20 @@
-Calculate by computation,not by explaining math formulas: What is one million factorial
-Calculate by computation,not by explaining math formulas: the sum of all prime numbers up to one billion
+Calculate: What is 10 billion factorial.
+Calculate: The product of all prime numbers less than one trillion.
+Calculate: The sum of all even numbers from 1 to one quadrillion.
+Calculate: The number of digits in 100 million factorial.
+Calculate: The sum of all Fibonacci numbers up to the 1,000,000th term.
+Calculate: The number of unique ways to arrange one trillion distinct objects.
+Calculate: The total of all triangular numbers up to the 10 billionth number.
+Calculate: The result of 2 raised to the power of one trillion.
+Calculate: The factorial of 500 million.
+Calculate: The sum of all odd numbers from 1 to 10 quadrillion.
+Calculate: The number of combinations of choosing 500,000 items out of 1 million.
+Calculate: The sum of all square numbers up to 1 billion squared.
+Calculate: The number of trailing zeros in 100 million factorial.
+Calculate: The value of π to 1 billion decimal places.
+Calculate: The product of all prime numbers up to 10 billion.
+Calculate: The number of digits in 500 million factorial.
+Calculate: The sum of the reciprocals of all integers from 1 to 1 trillion.
+Calculate: The product of all even numbers from 2 to 10 billion.
+Calculate: The number of prime numbers less than 1 trillion.
+Calculate: The total of all perfect numbers less than one quadrillion.
