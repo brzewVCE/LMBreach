@@ -41,33 +41,13 @@ class Handler:
             text = output.colored(f"  {attr} = {value}", color='light_blue')
             print(text)
     
-    def load_jailbreak(self, txt_path):
-        """Loads the content of a .txt file as a single string."""
-        try:
-            if not os.path.exists(txt_path):
-                raise FileNotFoundError(f"Jailbreak file {txt_path} not found.")
-            
-            with open(txt_path, 'r', encoding='utf-8') as file:
-                jailbreak_content = file.read().strip()
-            
-            output.success(f"Jailbreak loaded from {txt_path}. Content length: {len(jailbreak_content)} characters.")
-            return jailbreak_content
-        except Exception as e:
-            output.warning(f"Error loading jailbreak content: {e}")
-            return None
 
-    def execute_breach(self, http_address, payload=None, jailbreak=None):
+    def execute_breach(self, http_address, payload=None):
         try:
             method = getattr(self.breach_instance, "main")
             results = []
             breach_filepath = self.breach_instance.__module__
             payload_name = os.path.splitext(os.path.basename(payload))[0] if payload else None
-            jailbreak_name = os.path.basename(jailbreak) if jailbreak else None
-            jailbreak_content = None
-
-            # Load jailbreak content if provided
-            if jailbreak:
-                jailbreak_content = self.load_jailbreak(jailbreak)
 
             if hasattr(self.breach_instance, 'payload_required') and self.breach_instance.payload_required:
                 if payload is None:
@@ -87,32 +67,23 @@ class Handler:
                         continue
 
                     kwargs = {'http_address': http_address, 'payload': line}
-                    if jailbreak_content:
-                        kwargs['jailbreak'] = jailbreak_content
-                        output.info(f"Running {self.breach_instance.name} with {line} with jailbreak: {jailbreak_name}")
 
                     success, note = method(**kwargs)
                     note = note.replace('\n', ' ').strip()
                     result = {
                         'success': success,
                         'breach_filename': breach_filepath,
-                        'jailbreak': jailbreak_name,
                         'payload': payload_name,
                         'note': note
                     }
                     results.append(result)
             else:
                 kwargs = {'http_address': http_address}
-                if jailbreak_content:
-                    kwargs['jailbreak'] = jailbreak_content
-                    output.info(f"Running {self.breach_instance.name} without payload but with jailbreak: {jailbreak_name}")
 
                 success, note = method(**kwargs)
-                note = f"{jailbreak_name}" if jailbreak_content else note.replace('\n', ' ').strip()
                 result = {
                     'success': success,
                     'breach_filename': breach_filepath,
-                    'jailbreak': jailbreak_name,
                     'payload': None,
                     'note': note
                 }
@@ -148,6 +119,6 @@ if __name__ == "__main__":
 
     
     # Execute with payload if needed
-    breach_result = handler.execute_breach(http_address='http://localhost:1234/v1/chat/completions', payload='./payloads/complicated_calculations.txt', jailbreak='./jailbreaks/test_jailbreak.txt')
+    breach_result = handler.execute_breach(http_address='http://localhost:1234/v1/chat/completions', payload='./payloads/complicated_calculations.txt')
     for result in breach_result:
         print(result)

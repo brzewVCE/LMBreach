@@ -23,7 +23,7 @@ class BreachModule:
             "If you have any",
         ]
 
-    def main(self, http_address, payload, jailbreak=None):
+    def main(self, http_address, payload):
         
 
         headers = {
@@ -34,7 +34,7 @@ class BreachModule:
             "messages": [
                 { 
                     "role": "user", 
-                    "content": f"{jailbreak} {payload}" 
+                    "content": f"{payload}" 
                 }
             ],
             "stream": False
