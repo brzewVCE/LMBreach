@@ -16,7 +16,6 @@ class BreachModule:
             "cannot",
             "goes against",
             "not programmed to",
-            "if you have any",
             "sorry, but",
             "If you have any",
             "disapprove",
