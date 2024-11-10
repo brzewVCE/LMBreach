@@ -8,7 +8,6 @@ class Database:
         self.base_paths = {
             "modules": os.path.abspath("./modules"),
             "payloads": os.path.abspath("./payloads"),
-            "jailbreaks": os.path.abspath("./jailbreaks"),
             "workspaces": os.path.abspath("./workspaces")
         }
         
@@ -39,20 +38,20 @@ class Database:
             if not os.path.isfile(csv_filename):
                 with open(csv_filename, mode='w', newline='') as file:
                     writer = csv.writer(file)
-                    writer.writerow(["success", "module", "jailbreak", "payload", "note"])
+                    writer.writerow(["success", "module", "payload", "note"])
             return csv_filename
         except IOError as e:
             output.warning(f"Failed to create CSV file: {e}")
             return None
 
-    def add_entry(self, status, module, jailbreak, payload, note):
+    def add_entry(self, status, module, payload, note):
         """Add a new entry to the workspace's CSV file."""
         if status is None:
             return
         try:
             with open(self.csv_filename, mode='a', newline='', encoding='utf-8') as file:
                 writer = csv.writer(file, quoting=csv.QUOTE_ALL)
-                writer.writerow([status, module, jailbreak, payload, note])
+                writer.writerow([status, module, payload, note])
         except IOError as e:
             output.warning(f"Failed to write to CSV file: {e}")
 
@@ -180,7 +179,6 @@ class Database:
                 for row in reader:
                     status = row.get('success')
                     module = row.get('module')
-                    jailbreak = row.get('jailbreak')
                     payload = row.get('payload')
                     note = row.get('note')
 
@@ -188,8 +186,6 @@ class Database:
                     components = []
                     if module and module != 'None':
                         components.append(output.colored(f"Module: ", "blue") + output.colored(f"{module}"))
-                    if jailbreak and jailbreak != 'None':
-                        components.append(output.colored(f"Jailbreak: ", "light_green") + output.colored(f"{jailbreak}"))
                     if payload and payload != 'None':
                         components.append(output.colored(f"Payload: ", "magenta") + output.colored(f"{payload}"))
                     if note and note != 'None':
@@ -217,41 +213,36 @@ if __name__ == "__main__":
     # Initialize the database with a test workspace
     database = Database("TestWorkspace")
 
-    # Add entries with different combinations of module, jailbreak, and payload
-    database.add_entry(True, "communication_test", "bypass_check", "test_payload", "Connection successful with jailbreak")
-    database.add_entry(True, "obfuscation", "mask_identity", "payload_script", "Success: bypassed using jailbreak")
-    database.add_entry(False, "obfuscation", None, "payload_script", "Failure: no jailbreak applied")
+    # Add entries with different combinations of module and payload
+    database.add_entry(True, "communication_test", "bypass_check", "test_payload", "Connection successful")
+    database.add_entry(True, "obfuscation", "mask_identity", "payload_script", "Success: bypassed ")
+    database.add_entry(False, "obfuscation", None, "payload_script", "Failure: no ")
     database.add_entry(None, "malware_scan", "disable_alert", "alert_payload", "Error: execution halted")
 
     # Print the contents of each dictionary to verify loading
     print("\n--- Loaded Files ---")
     database.print_dictionary("modules")
     database.print_dictionary("payloads")
-    database.print_dictionary("jailbreaks")
     database.print_dictionary("workspaces")
 
     # Verify retrieval by index and by name for each type
     print("\n--- Retrieve File by Index ---")
     module_file = database.get_filename_by_index(1, "modules")
-    jailbreak_file = database.get_filename_by_index(1, "jailbreaks")
     payload_file = database.get_filename_by_index(1, "payloads")
     workspace_file = database.get_filename_by_index(1, "workspaces")
 
     output.info(f"Module file at index 1: {module_file}")
-    output.info(f"Jailbreak file at index 1: {jailbreak_file}")
     output.info(f"Payload file at index 1: {payload_file}")
     output.info(f"Workspace file at index 1: {workspace_file}")
 
-    # Print notes to verify entries with jailbreak
+    # Print notes to verify entries
     print("\n--- Notes ---")
     database.print_notes()
 
     # Retrieve by filename to verify accurate path retrieval
     print("\n--- Retrieve File by Name ---")
     module_name = database.get_filename_by_name("communication_test", "modules")
-    jailbreak_name = database.get_filename_by_name("bypass_check", "jailbreaks")
     payload_name = database.get_filename_by_name("test_payload", "payloads")
 
     output.info(f"Module file by name 'communication_test': {module_name}")
-    output.info(f"Jailbreak file by name 'bypass_check': {jailbreak_name}")
     output.info(f"Payload file by name 'test_payload': {payload_name}")

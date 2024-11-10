@@ -9,7 +9,7 @@ class BreachModule:
         self.payload_required = True  # Indicates that this module requires a payload
         self.timeout = 20  # Time in seconds to wait for a response before flagging DoS
 
-    def main(self, http_address, payload, jailbreak=""):
+    def main(self, http_address, payload):
         headers = {
             "Content-Type": "application/json"
         }
@@ -17,7 +17,7 @@ class BreachModule:
             "messages": [
                 { 
                     "role": "user", 
-                    "content": f"{jailbreak} {payload}" 
+                    "content": f"{payload}" 
                 }
             ],
             "stream": False

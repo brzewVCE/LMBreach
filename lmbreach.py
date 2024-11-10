@@ -8,7 +8,7 @@ def initialize_session():
     default_http_address = "http://localhost:1234/v1/chat/completions"
     http_address = default_http_address
     session_database = Database("temp")
-    return session_database, "temp", None, None, None, http_address, None
+    return session_database, "temp", None, None, http_address, None
 
 
 def show_help():
@@ -18,8 +18,7 @@ def show_help():
         ("use workspace [index/name]", "Switch or create a workspace"),
         ("use module [index/name]", "Load a module by index or name"),
         ("use payload [index/name]", "Load a payload by index or name"),
-        ("use jailbreak [index/name]", "Load a jailbreak by index or name"),
-        ("show [workspaces/modules/payloads/jailbreaks]", "Show available workspaces, modules, payloads, or jailbreaks"),
+        ("show [workspaces/modules/payloads]", "Show available workspaces, modules and payloads"),
         ("print notes", "Display notes related to the current workspace"),
         ("session info", "Display information about the current session"),
         ("module info", "Display information about the current loaded module"),
@@ -33,18 +32,14 @@ def show_help():
         cmd_colored = output.colored(cmd, color='yellow')
         print(f"    {cmd_colored} - {desc}")
 
-def show_session_info(session_database, current_workspace, module_handler, current_jailbreak, current_payload, http_address):
-    """Displays the current session's loaded workspace, module, payload, jailbreak, and HTTP address."""
+def show_session_info(session_database, current_workspace, module_handler, current_payload, http_address):
+    """Displays the current session's loaded workspace, module, payload and HTTP address."""
     output.info("\nCurrent session info:")
     output.success(f"Workspace: {current_workspace}")
     if module_handler:
         output.info(f"Module: {module_handler.module_path}")
     else:
         output.warning("Module: None loaded")
-    if current_jailbreak:
-        output.info(f"Jailbreak: {current_jailbreak}")
-    else:
-        output.warning("Jailbreak: None loaded")
     if current_payload:
         output.info(f"Payload: {current_payload}")
     else:
@@ -59,11 +54,11 @@ def show_module_info(module_handler):
     else:
         output.warning("No module is currently loaded.")
 
-def handle_use_command(session_database, command_parts, current_workspace, current_module, current_jailbreak, current_payload, module_handler):
-    """Handles the 'use' command for workspace, module, payload, and jailbreak."""
+def handle_use_command(session_database, command_parts, current_workspace, current_module, current_payload, module_handler):
+    """Handles the 'use' command for workspace, module, payload,."""
     if len(command_parts) < 3:
         output.warning("Invalid command format. Use: use [type] [index/name]")
-        return session_database, current_workspace, current_module, current_jailbreak, current_payload, module_handler
+        return session_database, current_workspace, current_module, current_payload, module_handler
 
     use_type = command_parts[1]
     identifier = command_parts[2]
@@ -76,7 +71,6 @@ def handle_use_command(session_database, command_parts, current_workspace, curre
                 session_database = Database(workspace_name)
                 current_workspace = workspace_name
                 current_module = None
-                current_jailbreak = None
                 current_payload = None
                 module_handler = None
                 output.success(f"Switched to workspace: {workspace_path}")
@@ -84,12 +78,11 @@ def handle_use_command(session_database, command_parts, current_workspace, curre
             session_database = Database(identifier)
             current_workspace = identifier
             current_module = None
-            current_jailbreak = None
             current_payload = None
             module_handler = None
             output.success(f"Created or switched to workspace: {identifier}")
 
-    elif use_type in ['module', 'payload', 'jailbreak']:
+    elif use_type in ['module', 'payload']:
         item_type = f"{use_type}s" # Convert to plural
         if identifier.isdigit():
             item_path = session_database.get_filename_by_index(int(identifier), item_type)
@@ -100,8 +93,6 @@ def handle_use_command(session_database, command_parts, current_workspace, curre
                     module_handler = Handler(item_path)
                 elif use_type == 'payload':
                     current_payload = item_name
-                elif use_type == 'jailbreak':
-                    current_jailbreak = item_name
                 output.success(f"Loaded {item_type} at index {identifier}: {item_path}")
         else:
             item_path = session_database.get_filename_by_name(identifier, item_type)
@@ -112,45 +103,38 @@ def handle_use_command(session_database, command_parts, current_workspace, curre
                     module_handler = Handler(item_path)
                 elif use_type == 'payload':
                     current_payload = item_name
-                elif use_type == 'jailbreak':
-                    current_jailbreak = item_name
                 output.success(f"Loaded {item_type} by name [{identifier}]: {item_path}")
 
-    return session_database, current_workspace, current_module, current_jailbreak, current_payload, module_handler
+    return session_database, current_workspace, current_module, current_payload, module_handler
 
 def handle_show_command(session_database, command_parts):
-    """Handles the 'show' command to display available workspaces, modules, payloads, or jailbreaks."""
+    """Handles the 'show' command to display available workspaces, modules, payloads."""
     if len(command_parts) < 2:
-        output.warning("Invalid command format. Use: show [workspaces/modules/payloads/jailbreaks]")
+        output.warning("Invalid command format. Use: show [workspaces/modules/payloads]")
         return
 
     dict_type = command_parts[1]
-    if dict_type in ['workspaces', 'modules', 'payloads', 'jailbreaks']:
+    if dict_type in ['workspaces', 'modules', 'payloads']:
         session_database.print_dictionary(dict_type)
     else:
-        output.warning(f"Invalid dictionary type: {dict_type}. Choose from 'workspaces', 'modules', 'payloads', or 'jailbreaks'.")
+        output.warning(f"Invalid dictionary type: {dict_type}. Choose from 'workspaces', 'modules', 'payloads'")
 
-def handle_run_module_command(session_database, module_handler, current_jailbreak, current_payload, http_address):
+def handle_run_module_command(session_database, module_handler, current_payload, http_address):
     """Handles the execution of the loaded module."""
     if module_handler:
         try:
             payload_path = None
-            jailbreak_path = None
             if current_payload:
                 current_payload = current_payload + '.txt'
                 payload_path = session_database.get_filename_by_name(current_payload, 'payloads')
-            if current_jailbreak:
-                current_jailbreak = current_jailbreak + '.txt'
-                jailbreak_path = session_database.get_filename_by_name(current_jailbreak, 'jailbreaks')
-            results = module_handler.execute_breach(http_address, payload=payload_path, jailbreak=jailbreak_path)
+            results = module_handler.execute_breach(http_address, payload=payload_path)
             if results:
                 for result in results:
                     success = result['success']
                     breach_filename = result['breach_filename']
-                    jailbreak = result['jailbreak']
                     payload = result['payload']
                     note = result['note']
-                    session_database.add_entry(success, breach_filename, jailbreak, payload, note)
+                    session_database.add_entry(success, breach_filename, payload, note)
         except KeyboardInterrupt:
             output.warning("Module execution interrupted by user.")
             return  # Return to the main loop
@@ -179,15 +163,14 @@ def handle_set_command(command_parts, module_handler, http_address):
 
 def main():
     # Initialize session
-    session_database, current_workspace, current_module, current_jailbreak, current_payload, http_address, module_handler = initialize_session()
+    session_database, current_workspace, current_module, current_payload, http_address, module_handler = initialize_session()
 
     while True:
         try:
             # Get user input
             colored_module = output.colored(f"{current_module}", color='yellow')
-            colored_jailbreak = output.colored(f"{current_jailbreak}", color='light_green')
             colored_payload = output.colored(f"{current_payload}", color='magenta')
-            colored_input = f"{colored_module} > {colored_jailbreak} > {colored_payload}: "
+            colored_input = f"{colored_module} > {colored_payload}: "
             user_input = input(f"{colored_input}").strip()
             command_parts = user_input.lower().split()
 
@@ -199,8 +182,8 @@ def main():
                 break
 
             elif command_parts[0] == 'use':
-                session_database, current_workspace, current_module, current_jailbreak, current_payload, module_handler = handle_use_command(
-                    session_database, command_parts, current_workspace, current_module, current_jailbreak, current_payload, module_handler
+                session_database, current_workspace, current_module, current_payload, module_handler = handle_use_command(
+                    session_database, command_parts, current_workspace, current_module, current_payload, module_handler
                 )
 
             elif command_parts[0] == 'show':
@@ -210,13 +193,13 @@ def main():
                 session_database.print_notes()
 
             elif user_input.lower() == 'session info':
-                show_session_info(session_database, current_workspace, module_handler, current_jailbreak, current_payload, http_address)
+                show_session_info(session_database, current_workspace, module_handler, current_payload, http_address)
 
             elif user_input.lower() == 'module info':
                 show_module_info(module_handler)
 
             elif user_input.lower() in ['run', 'breach']:
-                handle_run_module_command(session_database, module_handler, current_jailbreak, current_payload, http_address)
+                handle_run_module_command(session_database, module_handler, current_payload, http_address)
 
             elif command_parts[0] == 'set':
                 http_address = handle_set_command(command_parts, module_handler, http_address)

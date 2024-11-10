@@ -24,7 +24,7 @@ class BreachModule:
             "do not",
         ]
 
-    def main(self, http_address, payload, jailbreak=None):
+    def main(self, http_address, payload):
         
         message = f"{jailbreak} {payload}" if jailbreak else payload
 
@@ -36,7 +36,7 @@ class BreachModule:
             "messages": [
                 { 
                     "role": "user", 
-                    "content": message
+                    "content": f"{jailbreak} {payload}" 
                 }
             ],
             "stream": False
