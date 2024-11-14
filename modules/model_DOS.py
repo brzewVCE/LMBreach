@@ -39,10 +39,10 @@ class BreachModule:
             # Check if response time exceeded the timeout
             if response_time > self.timeout:
                 print(f"DoS successful: Time {response_time} seconds exceeded the timeout of {self.timeout} seconds.")
-                return True, f"DoS detected: Response time exceeded {self.timeout} seconds."
+                return True, f"DoS detected: {payload}. Response time exceeded {self.timeout} seconds."
             else:
                 print(f"DoS unsuccessful. Response time: {response_time} seconds. Got: {content}")
-                return False, f"DoS unsuccessful: Response time: {response_time} is lesser than {self.timeout}."
+                return False, f"DoS unsuccessful: {payload}. Response time: {response_time} is lesser than {self.timeout}."
 
         except requests.exceptions.Timeout:
             print(f"DoS detected: No response within the timeout of {self.timeout} seconds.")
