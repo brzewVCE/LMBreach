@@ -10,7 +10,7 @@
 
 - **Workspace Management**: Create and switch between different workspaces to organize your testing sessions.
 - **Module Handling**: Load and execute custom modules tailored for specific testing scenarios.
-- **Payload and Jailbreak Integration**: Incorporate diverse payloads and jailbreak scripts to challenge language models.
+- **Payload Integration**: Incorporate diverse payloads to challenge language models.
 - **Session Management**: Maintain detailed session information and view comprehensive module data.
 - **Customizable API Endpoint**: Configure the HTTP address to connect to your language model API hosted by LM Studio.
 - **Interactive CLI**: Navigate and utilize the tool efficiently with an intuitive command-line interface.
@@ -45,7 +45,6 @@ Upon starting, you'll see the LMBreach logo and a prompt ready for commands.
 - **use workspace [index/name]**: Switch or create a workspace.
 - **use module [index/name]**: Load a module by index or name.
 - **use payload [index/name]**: Load a payload by index or name.
-- **use jailbreak [index/name]**: Load a jailbreak by index or name.
 - **show [workspaces/modules/payloads/jailbreaks]**: Display available items.
 - **print notes**: Display notes related to the current workspace.
 - **session info**: Show current session information.
@@ -71,8 +70,6 @@ use module 1
 # Load a payload
 use payload default_payload
 
-# Load a jailbreak script
-use jailbreak default_jailbreak
 
 # View session information
 session info
@@ -89,11 +86,11 @@ By default, LMBreach connects to LM Studio at `http://localhost:1234/v1/chat/com
 set http_address http://your-custom-address:port/path
 ```
 
-## Modules, Payloads, and Jailbreaks
+## Modules and Payloads
 
 - **Modules**: Scripts that define specific testing procedures or interactions with the language model.
 - **Payloads**: Data or prompts sent to the language model during testing.
-- **Jailbreaks**: Scripts designed to test the language model's ability to handle unexpected or adversarial inputs.
+
 
 ## Session Management
 
