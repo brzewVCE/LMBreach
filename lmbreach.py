@@ -119,27 +119,33 @@ def handle_show_command(session_database, command_parts):
     else:
         output.warning(f"Invalid dictionary type: {dict_type}. Choose from 'workspaces', 'modules', 'payloads'")
 
-def handle_run_module_command(session_database, module_handler, current_payload, http_address):
-    """Handles the execution of the loaded module."""
+def handle_run_module_command(session_database, module_handler, current_payload, http_address, count=1):
+    """Handles the execution of the loaded module a specified number of times."""
     if module_handler:
         try:
             payload_path = None
             if current_payload:
                 current_payload = current_payload + '.txt'
                 payload_path = session_database.get_filename_by_name(current_payload, 'payloads')
-            results = module_handler.execute_breach(http_address, payload=payload_path)
-            if results:
-                for result in results:
-                    success = result['success']
-                    breach_filename = result['breach_filename']
-                    payload = result['payload']
-                    note = result['note']
-                    session_database.add_entry(success, breach_filename, payload, note)
+            
+            for i in range(count):  # Execute `count` times
+                output.info(f"Running module iteration {i+1} of {count}...")
+                results = module_handler.execute_breach(http_address, payload=payload_path)
+                if results:
+                    for result in results:
+                        success = result['success']
+                        breach_filename = result['breach_filename']
+                        payload = result['payload']
+                        note = result['note']
+                        session_database.add_entry(success, breach_filename, payload, note)
         except KeyboardInterrupt:
             output.warning("Module execution interrupted by user.")
             return  # Return to the main loop
     else:
         output.warning("No module is currently loaded.")
+
+
+
 
 def handle_set_command(command_parts, module_handler, http_address):
     """Handles the 'set' command to update variables or settings."""
@@ -177,7 +183,7 @@ def main():
             if len(command_parts) == 0:
                 continue
 
-            if command_parts[0] == 'quit':
+            if command_parts[0] == 'quit' or command_parts[0] == 'exit':
                 output.warning("Exiting program.")
                 break
 
@@ -198,8 +204,13 @@ def main():
             elif user_input.lower() == 'module info':
                 show_module_info(module_handler)
 
-            elif user_input.lower() in ['run', 'breach']:
-                handle_run_module_command(session_database, module_handler, current_payload, http_address)
+            elif command_parts[0] in ['run', 'breach']:
+                # Check if a number is provided for the run command
+                count = 1  # Default to 1 iteration
+                if len(command_parts) > 1 and command_parts[1].isdigit():
+                    count = int(command_parts[1])
+                handle_run_module_command(session_database, module_handler, current_payload, http_address, count=count)
+
 
             elif command_parts[0] == 'set':
                 http_address = handle_set_command(command_parts, module_handler, http_address)
