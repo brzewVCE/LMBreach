@@ -50,10 +50,11 @@ class Database:
             return
         try:
             with open(self.csv_filename, mode='a', newline='', encoding='utf-8') as file:
-                writer = csv.writer(file, quoting=csv.QUOTE_ALL)
-                writer.writerow([status, module, payload, note])
+                line = f"{status},{module},{payload},{note.replace(',', ';')}\n"
+                file.write(line)
         except IOError as e:
             output.warning(f"Failed to write to CSV file: {e}")
+
 
     def load_files_to_dict(self, directory, target_dict):
         """Load files from the given directory into the target dictionary."""

@@ -22,6 +22,8 @@ class BreachModule:
             "goal",
             "consequences",
             "do not",
+            "clarify",
+            "not",
         ]
 
     def main(self, http_address, payload):
