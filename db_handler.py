@@ -50,7 +50,7 @@ class Database:
             return
         try:
             with open(self.csv_filename, mode='a', newline='', encoding='utf-8') as file:
-                line = f"{status},{module},{payload},{note.replace(',', ';')}\n"
+                line = f"{status},{module},{payload},{note.replace(',', '|').replace(';', '|')}\n"
                 file.write(line)
         except IOError as e:
             output.warning(f"Failed to write to CSV file: {e}")
@@ -156,17 +156,23 @@ class Database:
 
     def sort_notes(self):
         """Sorts the entries in the CSV file so that success=True entries are listed first."""
-        with open(self.csv_filename, mode='r', newline='') as file:
-            reader = csv.reader(file)
-            header = next(reader)
-            rows = list(reader)
+        try:
+            with open(self.csv_filename, mode='r', newline='', encoding='utf-8') as file:
+                reader = csv.reader(file)
+                header = next(reader)
+                rows = list(reader)
 
-        sorted_rows = sorted(rows, key=lambda x: x[0] == 'False')
+            sorted_rows = sorted(rows, key=lambda x: x[0] == 'False')
 
-        with open(self.csv_filename, mode='w', newline='') as file:
-            writer = csv.writer(file)
-            writer.writerow(header)
-            writer.writerows(sorted_rows)
+            with open(self.csv_filename, mode='w', newline='', encoding='utf-8') as file:
+                writer = csv.writer(file)
+                writer.writerow(header)
+                writer.writerows(sorted_rows)
+        except FileNotFoundError:
+            output.warning(f"File {self.csv_filename} not found.")
+        except UnicodeDecodeError as e:
+            output.warning(f"Unicode decoding error: {e}")
+
 
     def print_notes(self):
         try:

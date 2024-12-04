@@ -27,6 +27,9 @@ class BreachModule:
             "not",
             "important to",
             "incorrect",
+            "false",
+            "scientific"
+            "scientifically",
         ]
 
     def main(self, http_address, payload):
