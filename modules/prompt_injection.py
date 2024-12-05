@@ -30,6 +30,7 @@ class BreachModule:
             "false",
             "scientific"
             "scientifically",
+            "apologize",
         ]
 
     def main(self, http_address, payload):
