@@ -1,4 +1,44 @@
-# Ignore Python cache files
+# Python
 __pycache__/
 *.py[cod]
-workspaces/
+*$py.class
+*.so
+.Python
+
+# Virtual Environments
+venv/
+env/
+ENV/
+.venv
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# LMBreach specific - workspace CSV files
+workspaces/*.csv
+# Keep the directory itself
+!workspaces/.gitkeep
+
+# Temporary files
+*.tmp
+*.log
+*.bak
+
+# Distribution / packaging
+build/
+dist/
+*.egg-info/
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+
+# OS specific
+Thumbs.db
+.Trash-*

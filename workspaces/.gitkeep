@@ -1,0 +1,2 @@
+# This file ensures the workspaces directory is tracked by Git
+# CSV files in this directory are ignored but the directory structure is preserved

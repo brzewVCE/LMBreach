@@ -1,117 +1,212 @@
+```
+ _    ___  ________                     _     
+| |   |  \/  | ___ \                   | |    
+| |   | .  . | |_/ /_ __ ___  __ _  ___| |__  
+| |   | |\/| | ___ \ '__/ _ \/ _` |/ __| '_ \ 
+| |___| |  | | |_/ / | |  __/ (_| | (__| | | |
+\_____|_|  |_|____/|_|  \___|\__,_|\___|_| |_|
+```
+
 # LMBreach
 
-## Introduction
+> **A modular security testing framework for Language Models**
 
-**LMBreach** is an interactive command-line tool designed to test and evaluate the security and robustness of Language Models (LMs). It allows users to load custom modules, payloads, and jailbreaks to simulate various scenarios and analyze the responses of language models.
+## 🎯 Overview
 
-**Note:** Currently, LMBreach only works with **[LM Studio](https://lmstudio.ai/)** as the LLM host.
+**LMBreach** is an interactive command-line tool designed for AI agents and developers to systematically test and evaluate the security, robustness, and behavioral boundaries of Language Models. Built with modularity at its core, LMBreach provides a flexible framework for conducting prompt injection tests, denial-of-service detection, jailbreak attempts, and custom security assessments.
 
-## Features
+**Current LLM Host Support:** [LM Studio](https://lmstudio.ai/) (extensible architecture for future providers)
 
-- **Workspace Management**: Create and switch between different workspaces to organize your testing sessions.
-- **Module Handling**: Load and execute custom modules tailored for specific testing scenarios.
-- **Payload Integration**: Incorporate diverse payloads to challenge language models.
-- **Session Management**: Maintain detailed session information and view comprehensive module data.
-- **Customizable API Endpoint**: Configure the HTTP address to connect to your language model API hosted by LM Studio.
-- **Interactive CLI**: Navigate and utilize the tool efficiently with an intuitive command-line interface.
+## ✨ Key Features
 
-## Installation
+### 🔧 **Modular Architecture**
+- **Custom Module System**: Create and load specialized testing modules with minimal boilerplate
+- **Payload Integration**: Incorporate diverse attack vectors and test cases from text files
+- **Dynamic Loading**: Import and execute modules at runtime without restarting sessions
+
+### 📊 **Workspace Management**
+- **Isolated Environments**: Organize testing sessions in separate workspaces
+- **Persistent Results**: Automatically track and store test results in CSV format
+- **Session State**: Maintain context across multiple testing iterations
+
+### 🎮 **Interactive CLI**
+- **Intuitive Commands**: Simple, memorable command structure
+- **Real-time Feedback**: Color-coded output for success, warnings, and errors
+- **Variable Customization**: Modify module parameters on-the-fly without editing code
+
+### 🔌 **Flexible API Integration**
+- **Configurable Endpoints**: Point to any LM Studio instance
+- **Standard OpenAI Format**: Uses `/v1/chat/completions` endpoint
+- **Easy Migration Path**: Architecture ready for multiple LLM provider support
+
+## 📚 Documentation
+
+- **[Installation Guide](INSTALL.md)** - Prerequisites, setup, and troubleshooting
+- **[Cookbook](COOKBOOK.md)** - Practical examples, module development, and best practices
+- **[Architecture Overview](ARCHITECTURE.md)** - System design and component interaction
+- **[Module Development Guide](MODULE_DEVELOPMENT.md)** - API specification and developer reference
+
+## 🚀 Quick Start
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/LMBreach.git
-
-# Navigate into the directory
+git clone https://github.com/brzewVCE/LMBreach.git
 cd LMBreach
 
 # Install dependencies
 pip install -r requirements.txt
-```
 
-## Usage
+# Ensure LM Studio is running on localhost:1234
 
-**Prerequisite:** Ensure you have **LM Studio** installed and running as your LLM host.
-
-Run the main script to start the interactive session:
-
-```bash
+# Launch LMBreach
 python lmbreach.py
 ```
 
-Upon starting, you'll see the LMBreach logo and a prompt ready for commands.
-
-### Available Commands
-
-- **use workspace [index/name]**: Switch or create a workspace.
-- **use module [index/name]**: Load a module by index or name.
-- **use payload [index/name]**: Load a payload by index or name.
-- **show [workspaces/modules/payloads/jailbreaks]**: Display available items.
-- **print notes**: Display notes related to the current workspace.
-- **session info**: Show current session information.
-- **module info**: Display detailed information about the loaded module.
-- **run** or **breach**: Execute the currently loaded module.
-- **set var [variable_name] [new_value]**: Set a variable in the loaded module.
-- **set http_address [new_address]**: Update the HTTP address for the LM Studio API.
-- **help**: Show the help message with available commands.
-- **quit**: Exit the program.
-
-### Example Session
+### First Session Example
 
 ```bash
-# Start LMBreach
-python lmbreach.py
+# Create a new workspace for your testing session
+use workspace security_test
 
-# Create or switch to a workspace
-use workspace my_workspace
+# List available modules
+show modules
 
-# Load a module by index or name
+# Load the connection test module
 use module 1
 
-# Load a payload
-use payload default_payload
+# Verify the module configuration
+module info
 
+# Execute the test
+run
 
-# View session information
-session info
+# View results
+print notes
+```
 
-# Run the loaded module
+## 🧩 Module System
+
+LMBreach comes with built-in modules for common security testing scenarios:
+
+| Module | Description | Payload Required |
+|--------|-------------|------------------|
+| **check_connection** | Verify API connectivity and basic response | ❌ No |
+| **prompt_injection** | Test prompt injection vulnerabilities | ✅ Yes |
+| **model_DOS** | Detect denial-of-service susceptibility | ✅ Yes |
+
+**Creating custom modules** is straightforward - see [MODULE_DEVELOPMENT.md](MODULE_DEVELOPMENT.md) for the complete guide.
+
+## 💾 Workspace & Results
+
+Every workspace maintains its own CSV database tracking:
+- ✅ Success/failure status
+- 📝 Module used
+- 🎯 Payload applied
+- 📊 Detailed notes and responses
+
+Results are automatically organized with successful breaches listed first for easy analysis.
+
+## 🎛️ Command Reference
+
+| Command | Description |
+|---------|-------------|
+| `use workspace [name]` | Create or switch to a workspace |
+| `use module [index\|name]` | Load a testing module |
+| `use payload [index\|name]` | Load a payload file |
+| `show [workspaces\|modules\|payloads]` | List available items |
+| `session info` | Display current session state |
+| `module info` | Show loaded module details |
+| `run` or `breach` | Execute the loaded module |
+| `run [N]` | Execute module N times |
+| `set var [name] [value]` | Update module variables |
+| `set http_address [url]` | Change API endpoint |
+| `print notes` | Display workspace results |
+| `help` | Show command help |
+| `quit` | Exit LMBreach |
+
+## 🔍 Example Use Cases
+
+### Prompt Injection Testing
+```bash
+use workspace prompt_injection_tests
+use module prompt_injection
+use payload info_enum
 run
 ```
 
-### Setting the HTTP Address
-
-By default, LMBreach connects to LM Studio at `http://localhost:1234/v1/chat/completions`. If your LM Studio instance is running on a different address or port, you can change it using:
-
+### DoS Vulnerability Assessment
 ```bash
-set http_address http://your-custom-address:port/path
+use workspace dos_testing
+use module model_DOS
+set var timeout 30
+use payload unwanted_values
+run 5  # Run 5 iterations
 ```
 
-## Modules and Payloads
+### Custom Module Development
+```bash
+# See COOKBOOK.md for step-by-step guide
+# See MODULE_DEVELOPMENT.md for API reference
+```
 
-- **Modules**: Scripts that define specific testing procedures or interactions with the language model.
-- **Payloads**: Data or prompts sent to the language model during testing.
+## 🏗️ Project Structure
 
+```
+LMBreach/
+├── lmbreach.py           # Main CLI interface
+├── module_handler.py     # Dynamic module loading & execution
+├── db_handler.py         # Workspace & result management
+├── output_handler.py     # Colored terminal output
+├── modules/              # Testing modules
+│   ├── check_connection.py
+│   ├── prompt_injection.py
+│   └── model_DOS.py
+├── payloads/             # Attack vectors & test data
+│   ├── info_enum.txt
+│   ├── misinformation.txt
+│   └── unwanted_values.txt
+└── workspaces/           # Session databases (CSV files)
+```
 
-## Session Management
+## 🤝 Contributing
 
-LMBreach maintains session information, allowing you to:
+LMBreach is designed to be extended by the community. Contributions are welcome in the form of:
 
-- Switch between workspaces without losing progress.
-- Keep track of loaded modules, payloads, and jailbreaks.
-- View notes and logs associated with each session.
+- **New Modules**: Additional testing scenarios and attack vectors
+- **Payload Collections**: Curated test cases for specific vulnerabilities
+- **Provider Support**: Integration with additional LLM hosting platforms
+- **Documentation**: Examples, tutorials, and use case studies
 
-## Contributing
+**Contribution Process:**
+1. Fork the repository
+2. Create a feature branch: `git checkout -b feature/your-feature-name`
+3. Commit your changes: `git commit -m 'Add: description'`
+4. Push to your fork: `git push origin feature/your-feature-name`
+5. Open a Pull Request
 
-Contributions are welcome! Please follow these steps:
+## ⚖️ License & Ethics
 
-1. Fork the repository.
-2. Create a new branch: `git checkout -b feature/your-feature-name`.
-3. Commit your changes: `git commit -m 'Add some feature'`.
-4. Push to the branch: `git push origin feature/your-feature-name`.
-5. Open a pull request.
+**License:** MIT License - See [LICENSE](LICENSE) file for details
 
-## Disclaimer
+### Responsible Use Guidelines
 
-LMBreach is intended for ethical testing and evaluation of language models. Please ensure you comply with all applicable laws and regulations when using this tool.
+LMBreach is designed for **ethical security research and testing** purposes only. Users must:
+
+- ✅ Only test language models you own or have explicit permission to test
+- ✅ Comply with all applicable laws, regulations, and terms of service
+- ✅ Use findings to improve model security and robustness
+- ✅ Practice responsible disclosure for discovered vulnerabilities
+
+- ❌ Do not use for malicious purposes
+- ❌ Do not test models without authorization
+- ❌ Do not weaponize findings or create harmful content
+
+**The developers of LMBreach assume no liability for misuse of this tool.**
+
+## 🙏 Acknowledgments
+
+Built for AI agents and developers exploring the frontiers of language model security.
 
 ---
+
+**Version:** 1.0.0 | **Last Updated:** October 2025
