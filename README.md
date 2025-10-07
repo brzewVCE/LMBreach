@@ -41,10 +41,10 @@
 
 ## 📚 Documentation
 
-- **[Installation Guide](INSTALL.md)** - Prerequisites, setup, and troubleshooting
-- **[Cookbook](COOKBOOK.md)** - Practical examples, module development, and best practices
-- **[Architecture Overview](ARCHITECTURE.md)** - System design and component interaction
-- **[Module Development Guide](MODULE_DEVELOPMENT.md)** - API specification and developer reference
+- **[Installation Guide](docs/INSTALL.md)** - Prerequisites, setup, and troubleshooting
+- **[Cookbook](docs/COOKBOOK.md)** - Practical examples, module development, and best practices
+- **[Architecture Overview](docs/ARCHITECTURE.md)** - System design and component interaction
+- **[Module Development Guide](docs/MODULE_DEVELOPMENT.md)** - API specification and developer reference
 
 ## 🚀 Quick Start
 
@@ -154,9 +154,18 @@ run 5  # Run 5 iterations
 ```
 LMBreach/
 ├── lmbreach.py           # Main CLI interface
-├── module_handler.py     # Dynamic module loading & execution
-├── db_handler.py         # Workspace & result management
-├── output_handler.py     # Colored terminal output
+├── requirements.txt      # Python dependencies
+├── LICENSE               # MIT License
+├── README.md             # This file
+├── src/                  # Source code
+│   ├── module_handler.py # Dynamic module loading & execution
+│   ├── db_handler.py     # Workspace & result management
+│   └── output_handler.py # Colored terminal output
+├── docs/                 # Documentation
+│   ├── INSTALL.md
+│   ├── COOKBOOK.md
+│   ├── ARCHITECTURE.md
+│   └── MODULE_DEVELOPMENT.md
 ├── modules/              # Testing modules
 │   ├── check_connection.py
 │   ├── prompt_injection.py
@@ -165,6 +174,7 @@ LMBreach/
 │   ├── info_enum.txt
 │   ├── misinformation.txt
 │   └── unwanted_values.txt
+├── sys-prompt/           # System prompt test cases
 └── workspaces/           # Session databases (CSV files)
 ```
 

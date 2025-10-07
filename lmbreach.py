@@ -1,6 +1,6 @@
-from db_handler import Database
-from module_handler import Handler
-import output_handler as output
+from src.db_handler import Database
+from src.module_handler import Handler
+import src.output_handler as output
 
 def initialize_session():
     """Initializes the session with a temporary workspace and sets the HTTP address."""

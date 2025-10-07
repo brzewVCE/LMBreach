@@ -1,5 +1,5 @@
 import importlib.util
-import output_handler as output
+import src.output_handler as output
 import os
 
 class Handler:

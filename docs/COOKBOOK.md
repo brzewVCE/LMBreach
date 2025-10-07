@@ -732,4 +732,4 @@ show payloads            # List available payloads
 **Next Steps:** 
 - Check [MODULE_DEVELOPMENT.md](MODULE_DEVELOPMENT.md) for detailed API specs
 - See [ARCHITECTURE.md](ARCHITECTURE.md) for system internals
-- Review [README.md](README.md) for project overview
+- Review [README.md](../README.md) for project overview

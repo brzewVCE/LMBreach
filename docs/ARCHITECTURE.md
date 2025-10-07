@@ -605,7 +605,7 @@ workspaces/[name].csv  # Success, module, payload, note
 
 - **[MODULE_DEVELOPMENT.md](MODULE_DEVELOPMENT.md)** - Detailed module API
 - **[COOKBOOK.md](COOKBOOK.md)** - Practical usage patterns
-- **[README.md](README.md)** - Project overview
+- **[README.md](../README.md)** - Project overview
 
 ---
 
