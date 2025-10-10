@@ -1,5 +1,0 @@
-show modules
-use module 1
-module info
-session info
-quit

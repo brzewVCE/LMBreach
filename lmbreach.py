@@ -1,10 +1,13 @@
 from src.db_handler import Database
 from src.module_handler import Handler
 import src.output_handler as output
+import argparse
+import sys
 
-def initialize_session():
+def initialize_session(quiet=False):
     """Initializes the session with a temporary workspace and sets the HTTP address."""
-    output.logo()
+    if not quiet:
+        output.logo()
     default_http_address = "http://localhost:1234/v1/chat/completions"
     http_address = default_http_address
     session_database = Database("temp")
@@ -167,9 +170,151 @@ def handle_set_command(command_parts, module_handler, http_address):
         output.warning("Invalid set command. Use: set http_address [new_address] or set var [variable_name] [new_value]")
     return http_address
 
-def main():
+def parse_arguments():
+    """Parse command-line arguments for one-liner execution."""
+    parser = argparse.ArgumentParser(
+        description='LMBreach - Language Model Security Testing Framework',
+        epilog='Examples:\n'
+               '  python lmbreach.py -m check_connection --run\n'
+               '  python lmbreach.py -w my_test -m prompt_injection -p info_enum --run 5\n'
+               '  python lmbreach.py -m model_DOS --set-var timeout 30 --run --quiet',
+        formatter_class=argparse.RawDescriptionHelpFormatter
+    )
+    
+    # Optional arguments
+    parser.add_argument('-w', '--workspace', type=str, 
+                        help='Workspace name to use or create')
+    parser.add_argument('-m', '--module', type=str, 
+                        help='Module name or index to load')
+    parser.add_argument('-p', '--payload', type=str, 
+                        help='Payload name or index to load')
+    parser.add_argument('--http-address', type=str, 
+                        help='HTTP address for API (default: http://localhost:1234/v1/chat/completions)')
+    parser.add_argument('--set-var', nargs=2, action='append', metavar=('VAR', 'VALUE'),
+                        help='Set module variable (can be used multiple times)')
+    parser.add_argument('--run', nargs='?', const=1, type=int, metavar='ITERATIONS',
+                        help='Execute module (optionally specify number of iterations)')
+    parser.add_argument('-q', '--quiet', action='store_true',
+                        help='Quiet mode (no banner)')
+    
+    return parser.parse_args()
+
+def execute_oneliner(args):
+    """Execute LMBreach commands from command-line arguments."""
     # Initialize session
-    session_database, current_workspace, current_module, current_payload, http_address, module_handler = initialize_session()
+    session_database, current_workspace, current_module, current_payload, http_address, module_handler = initialize_session(quiet=args.quiet)
+    
+    # Set workspace if provided
+    if args.workspace:
+        session_database = Database(args.workspace)
+        current_workspace = args.workspace
+        if not args.quiet:
+            output.success(f"Using workspace: {args.workspace}")
+    
+    # Set HTTP address if provided
+    if args.http_address:
+        http_address = args.http_address
+        if not args.quiet:
+            output.success(f"HTTP address set to: {http_address}")
+    
+    # Load module if provided
+    if args.module:
+        item_type = 'modules'
+        if args.module.isdigit():
+            item_path = session_database.get_filename_by_index(int(args.module), item_type)
+            if item_path:
+                item_name = session_database.get_name_by_filename(item_path, item_type)
+                current_module = item_name
+                module_handler = Handler(item_path)
+                if not args.quiet:
+                    output.success(f"Loaded module: {item_path}")
+            else:
+                output.warning(f"Module at index {args.module} not found")
+                sys.exit(1)
+        else:
+            item_path = session_database.get_filename_by_name(args.module, item_type)
+            if item_path:
+                item_name = session_database.get_name_by_filename(item_path, item_type)
+                current_module = item_name
+                module_handler = Handler(item_path)
+                if not args.quiet:
+                    output.success(f"Loaded module: {item_path}")
+            else:
+                output.warning(f"Module '{args.module}' not found")
+                sys.exit(1)
+    
+    # Load payload if provided
+    if args.payload:
+        item_type = 'payloads'
+        if args.payload.isdigit():
+            item_path = session_database.get_filename_by_index(int(args.payload), item_type)
+            if item_path:
+                item_name = session_database.get_name_by_filename(item_path, item_type)
+                current_payload = item_name
+                if not args.quiet:
+                    output.success(f"Loaded payload: {item_path}")
+            else:
+                output.warning(f"Payload at index {args.payload} not found")
+                sys.exit(1)
+        else:
+            item_path = session_database.get_filename_by_name(args.payload, item_type)
+            if item_path:
+                item_name = session_database.get_name_by_filename(item_path, item_type)
+                current_payload = item_name
+                if not args.quiet:
+                    output.success(f"Loaded payload: {item_path}")
+            else:
+                output.warning(f"Payload '{args.payload}' not found")
+                sys.exit(1)
+    
+    # Set module variables if provided
+    if args.set_var and module_handler:
+        for var_name, var_value in args.set_var:
+            module_handler.set_variable(var_name, var_value)
+            if not args.quiet:
+                output.success(f"Set {var_name} = {var_value}")
+    
+    # Execute module if --run flag is provided
+    if args.run is not None:
+        if not module_handler:
+            output.warning("No module loaded. Cannot execute.")
+            sys.exit(1)
+        
+        count = args.run
+        if not args.quiet:
+            output.info(f"Executing module {count} time(s)...")
+        
+        handle_run_module_command(session_database, module_handler, current_payload, http_address, count=count)
+        
+        if not args.quiet:
+            output.success("Execution complete!")
+        
+        # Exit after execution in one-liner mode
+        sys.exit(0)
+    else:
+        # If no --run flag, enter interactive mode with loaded settings
+        if not args.quiet and (args.module or args.payload or args.workspace):
+            output.info("Entering interactive mode with loaded configuration...")
+        
+        # Continue to interactive mode
+        return session_database, current_workspace, current_module, current_payload, http_address, module_handler
+
+def main():
+    # Parse command-line arguments
+    args = parse_arguments()
+    
+    # Check if running in one-liner mode (any arguments provided)
+    if any([args.workspace, args.module, args.payload, args.http_address, args.set_var, args.run is not None, args.quiet]):
+        # Execute one-liner mode
+        result = execute_oneliner(args)
+        if result is None:
+            # One-liner completed and exited
+            return
+        # Otherwise, continue to interactive mode with loaded settings
+        session_database, current_workspace, current_module, current_payload, http_address, module_handler = result
+    else:
+        # Initialize session normally (interactive mode from start)
+        session_database, current_workspace, current_module, current_payload, http_address, module_handler = initialize_session()
 
     while True:
         try:

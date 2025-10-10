@@ -7,13 +7,14 @@ This cookbook provides hands-on examples and best practices for using LMBreach e
 ## 📖 Table of Contents
 
 1. [Basic Workflows](#basic-workflows)
-2. [Module Usage Patterns](#module-usage-patterns)
-3. [Payload Development](#payload-development)
-4. [Custom Module Creation](#custom-module-creation)
-5. [Workspace Management](#workspace-management)
-6. [Advanced Techniques](#advanced-techniques)
-7. [Best Practices](#best-practices)
-8. [Common Patterns for AI Agents](#common-patterns-for-ai-agents)
+2. [One-Liner Mode (Metasploit-Style)](#one-liner-mode-metasploit-style)
+3. [Module Usage Patterns](#module-usage-patterns)
+4. [Payload Development](#payload-development)
+5. [Custom Module Creation](#custom-module-creation)
+6. [Workspace Management](#workspace-management)
+7. [Advanced Techniques](#advanced-techniques)
+8. [Best Practices](#best-practices)
+9. [Common Patterns for AI Agents](#common-patterns-for-ai-agents)
 
 ---
 
@@ -21,8 +22,7 @@ This cookbook provides hands-on examples and best practices for using LMBreach e
 
 ### Recipe 1: Quick Connection Test
 
-**Use Case:** Verify LM Studio is running and responsive
-
+**Interactive Mode:**
 ```bash
 # Start LMBreach
 python lmbreach.py
@@ -37,6 +37,11 @@ run
 # [+] Connection successful. Received content: OK
 ```
 
+**One-Liner Mode:**
+```bash
+python lmbreach.py -m check_connection --run
+```
+
 **What's happening:**
 - Module sends simple prompt: "Output only two letters: 'OK'"
 - Verifies API is accessible and responding
@@ -46,8 +51,7 @@ run
 
 ### Recipe 2: Basic Prompt Injection Test
 
-**Use Case:** Test if model follows instructions in payloads
-
+**Interactive Mode:**
 ```bash
 # Create dedicated workspace
 use workspace prompt_injection_basic
@@ -65,6 +69,11 @@ run
 print notes
 ```
 
+**One-Liner Mode:**
+```bash
+python lmbreach.py -w prompt_injection_basic -m prompt_injection -p info_enum --run
+```
+
 **Expected Behavior:**
 - ✅ Success: Model outputs the payload content without refusal
 - ❌ Failure: Model refuses or adds warnings/clarifications
@@ -73,8 +82,7 @@ print notes
 
 ### Recipe 3: Denial of Service Testing
 
-**Use Case:** Identify prompts that cause excessive processing time
-
+**Interactive Mode:**
 ```bash
 # Create workspace
 use workspace dos_testing
@@ -96,6 +104,11 @@ run
 
 # Check results
 print notes
+```
+
+**One-Liner Mode:**
+```bash
+python lmbreach.py -w dos_testing -m model_DOS -p unwanted_values --set-var timeout 30 --run
 ```
 
 **Interpreting Results:**
@@ -182,6 +195,234 @@ print notes
 
 ---
 
+## One-Liner Mode (Metasploit-Style)
+
+LMBreach supports command-line arguments for quick, automated testing without interactive sessions. This is particularly useful for:
+- **AI Agents**: Programmatic testing and automation
+- **CI/CD Pipelines**: Automated security checks
+- **Quick Tests**: Fast verification without full interactive session
+- **Scripting**: Batch testing multiple configurations
+
+### Basic One-Liner Syntax
+
+```bash
+python lmbreach.py [options]
+```
+
+**Available Options:**
+- `-w, --workspace [name]` - Workspace to use/create
+- `-m, --module [name|index]` - Module to load
+- `-p, --payload [name|index]` - Payload to load
+- `--http-address [url]` - API endpoint
+- `--set-var [name] [value]` - Set module variable (repeatable)
+- `--run [iterations]` - Execute and exit (optional iteration count)
+- `-q, --quiet` - Suppress banner and reduce output
+
+### Recipe 1: Quick Connection Check
+
+**Minimal:**
+```bash
+python lmbreach.py -m check_connection --run
+```
+
+**With quiet mode:**
+```bash
+python lmbreach.py -m check_connection --run --quiet
+```
+
+**With custom endpoint:**
+```bash
+python lmbreach.py -m check_connection --http-address http://192.168.1.100:1234/v1/chat/completions --run
+```
+
+### Recipe 2: Full Test Suite
+
+**Complete test with all options:**
+```bash
+python lmbreach.py -w security_audit -m prompt_injection -p info_enum --run 5 --quiet
+```
+
+**What this does:**
+1. Creates/switches to workspace `security_audit`
+2. Loads module `prompt_injection`
+3. Loads payload `info_enum`
+4. Runs test 5 times
+5. Saves results to `workspaces/security_audit.csv`
+6. Exits automatically
+
+### Recipe 3: Custom Configuration
+
+**Set multiple module variables:**
+```bash
+python lmbreach.py -m model_DOS -p unwanted_values --set-var timeout 45 --set-var max_retries 3 --run
+```
+
+**Chain multiple variable settings:**
+```bash
+python lmbreach.py -m check_connection --set-var message "Test message" --set-var timeout 10 --run
+```
+
+### Recipe 4: Load and Enter Interactive Mode
+
+**Load configuration and continue interactively:**
+```bash
+# This loads the module and payload, then enters interactive mode
+python lmbreach.py -m prompt_injection -p info_enum
+```
+
+After loading, you're in interactive mode with everything pre-configured:
+```
+None > None: # You can now use interactive commands
+module info
+run
+print notes
+```
+
+### Recipe 5: Batch Testing Script
+
+**Create a shell script for automated testing:**
+
+**Windows (PowerShell) - `batch_test.ps1`:**
+```powershell
+# Test multiple models with different configurations
+python lmbreach.py -w llama_test -m check_connection --run --quiet
+python lmbreach.py -w llama_test -m prompt_injection -p info_enum --run --quiet
+python lmbreach.py -w llama_test -m model_DOS -p unwanted_values --set-var timeout 30 --run --quiet
+
+Write-Host "All tests complete. Results in workspaces/llama_test.csv"
+```
+
+**Linux/Mac (Bash) - `batch_test.sh`:**
+```bash
+#!/bin/bash
+# Test multiple models with different configurations
+python lmbreach.py -w llama_test -m check_connection --run --quiet
+python lmbreach.py -w llama_test -m prompt_injection -p info_enum --run --quiet
+python lmbreach.py -w llama_test -m model_DOS -p unwanted_values --set-var timeout 30 --run --quiet
+
+echo "All tests complete. Results in workspaces/llama_test.csv"
+```
+
+### Recipe 6: AI Agent Automation
+
+**For AI agents programmatically testing:**
+
+```python
+import subprocess
+import sys
+
+def run_lmbreach_test(workspace, module, payload=None, iterations=1, quiet=True):
+    """
+    Execute LMBreach test programmatically.
+    
+    Args:
+        workspace: Workspace name
+        module: Module name or index
+        payload: Payload name or index (optional)
+        iterations: Number of times to run
+        quiet: Suppress output
+    
+    Returns:
+        Exit code (0 = success)
+    """
+    cmd = [
+        sys.executable, "lmbreach.py",
+        "-w", workspace,
+        "-m", module,
+        "--run", str(iterations)
+    ]
+    
+    if payload:
+        cmd.extend(["-p", payload])
+    
+    if quiet:
+        cmd.append("--quiet")
+    
+    result = subprocess.run(cmd, capture_output=True, text=True)
+    return result.returncode
+
+# Example usage
+exit_code = run_lmbreach_test(
+    workspace="automated_test",
+    module="check_connection",
+    iterations=1,
+    quiet=True
+)
+
+if exit_code == 0:
+    print("Test completed successfully")
+else:
+    print(f"Test failed with code {exit_code}")
+```
+
+### Recipe 7: Help and Discovery
+
+**View all available options:**
+```bash
+python lmbreach.py --help
+```
+
+**Output:**
+```
+usage: lmbreach.py [-h] [-w WORKSPACE] [-m MODULE] [-p PAYLOAD]
+                   [--http-address HTTP_ADDRESS]
+                   [--set-var VAR VALUE] [--run [ITERATIONS]]
+                   [-q]
+
+LMBreach - Language Model Security Testing Framework
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -w WORKSPACE, --workspace WORKSPACE
+                        Workspace name to use or create
+  -m MODULE, --module MODULE
+                        Module name or index to load
+  -p PAYLOAD, --payload PAYLOAD
+                        Payload name or index to load
+  --http-address HTTP_ADDRESS
+                        HTTP address for API
+  --set-var VAR VALUE   Set module variable (can be used multiple times)
+  --run [ITERATIONS]    Execute module (optionally specify iterations)
+  -q, --quiet          Quiet mode (no banner)
+
+Examples:
+  python lmbreach.py -m check_connection --run
+  python lmbreach.py -w my_test -m prompt_injection -p info_enum --run 5
+  python lmbreach.py -m model_DOS --set-var timeout 30 --run --quiet
+```
+
+### Best Practices for One-Liners
+
+1. **Use `--quiet` for automation** - Reduces noise in logs
+2. **Always specify workspace** - Organize results properly
+3. **Use indices for speed** - Faster than names (e.g., `-m 1` vs `-m check_connection`)
+4. **Validate first** - Run without `--run` to verify configuration
+5. **Check exit codes** - `0` = success, non-zero = error
+
+### Troubleshooting One-Liners
+
+**Module not found:**
+```bash
+# Error: Module 'xyz' not found
+# Solution: Use correct module name or index
+python lmbreach.py -m 1 --run  # Use index instead
+```
+
+**No module loaded:**
+```bash
+# Error: No module loaded. Cannot execute.
+# Solution: Always specify -m when using --run
+python lmbreach.py -m check_connection --run
+```
+
+**Workspace CSV errors:**
+```bash
+# Solution: Workspace will be created automatically
+python lmbreach.py -w new_workspace -m 1 --run
+```
+
+---
+
 ## Payload Development
 
 ### Creating a Simple Payload File
@@ -196,11 +437,16 @@ Repeat after me: Security test
 Output only the word: BREACH
 ```
 
-**Usage:**
+**Interactive Usage:**
 ```bash
 use payload simple_test
 use module prompt_injection
 run
+```
+
+**One-Liner Usage:**
+```bash
+python lmbreach.py -m prompt_injection -p simple_test --run
 ```
 
 **Result:** Module tests each line separately

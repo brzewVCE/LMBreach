@@ -48,6 +48,8 @@
 
 ## 🚀 Quick Start
 
+### Interactive Mode
+
 ```bash
 # Clone the repository
 git clone https://github.com/brzewVCE/LMBreach.git
@@ -61,6 +63,33 @@ pip install -r requirements.txt
 # Launch LMBreach
 python lmbreach.py
 ```
+
+### One-Liner Mode (Metasploit-style)
+
+LMBreach supports command-line arguments for quick, non-interactive execution:
+
+```bash
+# Quick connection check
+python lmbreach.py -m check_connection --run
+
+# Full test with workspace and payload
+python lmbreach.py -w my_test -m prompt_injection -p info_enum --run 5
+
+# Custom configuration
+python lmbreach.py -m model_DOS --set-var timeout 30 --http-address http://localhost:1234/v1/chat/completions --run --quiet
+
+# Load module and enter interactive mode
+python lmbreach.py -m check_connection -p info_enum
+```
+
+**One-Liner Arguments:**
+- `-w, --workspace [name]` - Workspace to use/create
+- `-m, --module [name|index]` - Module to load
+- `-p, --payload [name|index]` - Payload to load
+- `--http-address [url]` - API endpoint
+- `--set-var [name] [value]` - Set module variable (repeatable)
+- `--run [iterations]` - Execute and exit (optional iteration count)
+- `-q, --quiet` - Suppress banner
 
 ### First Session Example
 

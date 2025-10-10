@@ -120,8 +120,15 @@ class Database:
             dictionary = self.data_dicts[dict_type]
             directory = self.base_paths[dict_type]
 
+            # First, try exact match
             for index, filename in dictionary.items():
                 if filename == name:
+                    full_path = os.path.join(directory, filename)
+                    return full_path
+            
+            # If no exact match, try matching without extension
+            for index, filename in dictionary.items():
+                if os.path.splitext(filename)[0] == name:
                     full_path = os.path.join(directory, filename)
                     return full_path
 
